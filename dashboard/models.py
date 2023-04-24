@@ -16,14 +16,13 @@ class Admin(models.Model):
         return self.full_name
 
 class Employee(models.Model):
-    emp_email = models.CharField(max_length=50)
-    emp_pwd = models.  CharField(max_length=255)
-    emp_name = models.CharField(max_length=50)
-    emp_contact = models.PositiveBigIntegerField(max_length=10)
-    salary = models.PositiveIntegerField(max_length=20)
-    reg_date = models.DateField()
-    admin_id = models.ForeignKey(Admin, on_delete=models.CASCADE, related_name='employee')
-    commission_amt = models.PositiveIntegerField(max_length=50)
+    emp_email = models.CharField(max_length=50, blank=True )
+    emp_pwd = models.  CharField(max_length=255, blank=True)
+    emp_name = models.CharField(max_length=50, blank=True)
+    emp_contact = models.PositiveBigIntegerField(blank=True)
+    salary = models.PositiveIntegerField(blank=True)
+    reg_date = models.DateField(blank=True)
+    admin_id = models.ForeignKey(Admin, on_delete=models.CASCADE, related_name='employee', blank=True)
 
     class Meta:
         verbose_name = "Employee"
@@ -54,7 +53,7 @@ class Farmer(models.Model):
     farmer_pwd = models.CharField(max_length=50)
     farmer_email = models.CharField(max_length=50)
     farmer_address = models.CharField(max_length=100)
-    farmer_contact = models.PositiveBigIntegerField(max_length=10)
+    farmer_contact = models.PositiveBigIntegerField()
     admin_id = models.ForeignKey(Admin, on_delete=models.CASCADE, related_name='admin')
 
     class Meta:
