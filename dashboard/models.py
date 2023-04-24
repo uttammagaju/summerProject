@@ -21,7 +21,7 @@ class Employee(models.Model):
     emp_name = models.CharField(max_length=50, blank=True)
     emp_contact = models.PositiveBigIntegerField(blank=True)
     salary = models.PositiveIntegerField(blank=True)
-    reg_date = models.DateField(blank=True)
+    reg_date = models.DateField(null=True, blank=True)
     admin_id = models.ForeignKey(Admin, on_delete=models.CASCADE, related_name='employee', blank=True)
 
     class Meta:
@@ -37,7 +37,7 @@ class Milk(models.Model):
     fat =  models.PositiveIntegerField()
     rate = models.PositiveIntegerField()
     qty = models.PositiveIntegerField()
-    date = models.DateField()
+    date = models.DateField(null=True, blank=True)
     emp_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='employee')
 
     class Meta:
