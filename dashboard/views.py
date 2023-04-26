@@ -2,7 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.template import loader
 from django.urls import reverse_lazy,reverse
-from django.views.generic import TemplateView,ListView
+from django.views.generic import TemplateView,ListView,DeleteView
 from .forms import *
 from . models import *
 from datetime import datetime
@@ -15,7 +15,6 @@ class DashboardHomeView(TemplateView):
 class AdminListView(ListView):
     template_name = 'dashboard/admins/list.html'
     model = Admin
-
 
 def adminCreateView(request):
     if request.method == 'POST':
@@ -30,6 +29,10 @@ def adminCreateView(request):
     else: 
          return render(request, "dashboard/admins/form.html")
 
+
+class AdminDeleteView(DeleteView):
+    model = Admin
+    success_url = reverse_lazy('dashboard:admins-list')
 
 
 #Employee

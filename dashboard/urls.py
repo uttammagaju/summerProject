@@ -8,6 +8,7 @@ urlpatterns = [
     #Admin
     path('admins',views.AdminListView.as_view(), name = 'admins-list'),
     path('admins/create',views.adminCreateView, name ='admins-create'),
+    path('admins/<int:pk>/delete',views.AdminDeleteView.as_view(), name='admins-delete'),
     #Employee
     path('employees',views.EmployeeListView.as_view(), name = 'employees-list'),
     path('employees/create',views.employeeCreateView, name = 'employees-create'),
