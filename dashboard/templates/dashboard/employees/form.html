@@ -34,7 +34,7 @@
                 <select class="form-control" id="inputAddress2" name="admin_id" placeholder="Admin Id">
                     <option value="">Select Admin ID</option>
                     {% for admin in admins %}
-                    <option value="{{ admin.id }}">{{ admin.full_name }}</option>
+                    <option value="{{ admin.id }}">{{ admin.username }}</option>
                     {% endfor %}
                 </select>
                 

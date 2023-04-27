@@ -1,25 +1,22 @@
-from django.shortcuts import render,redirect
-from dashboard.models import *
-from django.contrib.auth import authenticate, login,logout
+from django.shortcuts import render
+from django.views.generic import FormView
+from django.contrib.auth import login,logout
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
-# Create your views here.
-def loginView(request):
-    if request.method == "POST":
-        email= request.POST['email']
-        password= request.POST['password']
-        admin_email=Admin.objects.get(email=email)
-        admin_password= Admin.objects.get(admin_pwd=password)
-        error = 'Email or password didn\'t match.'
-        
-        user = authenticate(request, email=admin_email.email, password=admin_password.admin_pwd)
-        if user is not None:
-            login(request, user)
-            return redirect(reverse_lazy('dashboard:home'))
-        else:
-            return render(request,'accounts/login.html',{'error':error})
-    else:
-        return render(request,'accounts/login.html')
 
-def logoutView(request):
-    logout(request)
-    return redirect(reverse_lazy('accounts:login'))
+from .forms import LoginForm
+
+# Create your views here.
+class LoginViews(FormView):
+    template_name = 'accounts/login.html'
+    form_class = LoginForm
+
+    def form_valid(self, form):
+        login(self.request, form.instance)
+        return redirect(reverse_lazy('dashboard:home'))
+
+
+class LogoutViews(FormView):
+    def get(self, request, *args, **kwargs):
+        logout(self.request)
+        return redirect(reverse_lazy('accounts:login'))

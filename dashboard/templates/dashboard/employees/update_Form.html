@@ -34,9 +34,9 @@
                 <select class="form-control" id="inputAddress2" name="admin_id" placeholder="Admin Id" >
                     {% for admin in admins %}
                         {% if admin.id == employee.admin_id %}
-                            <option value="{{ admin.id }}" selected>{{ admin.full_name }}</option>
+                            <option value="{{ admin.id }}" selected>{{ admin.username }}</option>
                         {% else %}
-                            <option value="{{ admin.id }}">{{ admin.full_name }}</option>
+                            <option value="{{ admin.id }}">{{ admin.username }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
