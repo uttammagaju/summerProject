@@ -4,25 +4,23 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Employee</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Fat Rate</h6>
     </div>
     <div class="card-body">
-        <form method="post" action="{% url 'dashboard:employees-create' %}" enctype="multipart/form-data">
+        <form method="post" action="{% url 'dashboard:fatrates-create' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group  mt-3">
-                <input type="text" class="form-control" id="inputPassword4" name="emp_pwd" placeholder="Password">
+                <select name="type_of_milk" id="">
+                    <option value="" selected>Select Type Of Milk</option>
+                    <option value="Cow">Cow</option>
+                    <option value="Buffalo">Buffalo</option>
+                </select>
             </div>
             <div class="form-group mt-3">
-                <input type="text" class="form-control" id="inputAddress" name="emp_name" placeholder="Employee Name">
+                <input type="text" name="rate" placeholder="Rate">
             </div>
             <div class="form-group mt-3">
-                <input type="text" class="form-control" id="inputAddress2" name="emp_contact" placeholder="Contact">
-            </div>
-            <div class="form-group mt-3">
-                <input type="text" class="form-control" id="inputAddress2" name="salary" placeholder="Salary">
-            </div>
-            <div class="form-group mt-3">
-                <input type="date" class="form-control" id="inputAddress2" name="reg_date" placeholder="Register Date">
+                <input type="date" name="rate_set_date" placeholder="Rate Set Date">
             </div>
             <div class="form-group mt-3">
                 <select class="form-control" id="inputAddress2" name="admin_id" placeholder="Admin Id">
@@ -31,8 +29,12 @@
                     <option value="{{ admin.id }}">{{ admin.username }}</option>
                     {% endfor %}
                 </select>
-
             </div>
+            <div class="form-group mt-3">
+                <label >Is Published</label>
+                <input type="checkbox" name="is_published" value="True" >
+            </div>
+
 
     </div>
     <button type="submit" class="btn btn-primary">Save</button>

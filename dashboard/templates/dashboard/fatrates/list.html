@@ -2,13 +2,13 @@
 
 {% block main %}
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Employee</h1>
+                <h1 class="h3 mb-2 text-gray-800">Fat Rate</h1>
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <div class="float-right">
-                            <a href="{% url 'dashboard:employees-create' %}" class = "btn btn-primary">
-                                <i class="fa fa-plus"></i>&nbsp; Add Employee
+                            <a href="{% url 'dashboard:fatrates-create' %}" class = "btn btn-primary">
+                                <i class="fa fa-plus"></i>&nbsp; Add Fate Rate
                             </a>
                         </div>
                     </div>
@@ -18,12 +18,11 @@
                                 <thead>
                                     <tr>
                                         <th>SN</th>
-                                        <th>Email</th>
-                                        <th>Password</th>
-                                        <th>Name</th>
-                                        <th>Address</th>
-                                        <th>Contact</th>
+                                        <th>Type of Milk</th>
+                                        <th>Rate</th>
+                                        <th>Rate Set Date</th>
                                         <th>Admin</th>
+                                        <th>Is Published</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -32,19 +31,16 @@
                                     {% for object in object_list %}
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
-                                        <td>{{ object.farmer_email }}</td>
-                                        <td>{{ object.farmer_pwd }}</td>
-                                        <td>{{ object.farmer_name }}</td>
-                                        <td>{{ object.farmer_address }}</td>
-                                        <td>{{ object.farmer_contact }}</td>
+                                        <td>{{ object.type_of_milk }}</td>
+                                        <td>{{ object.rate }}</td>
+                                        <td>{{ object.rate_set_date }}</td>
                                         <td>{{ object.admin_id }}</td>
+                                        <td>{{ object.is_published }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{% url 'dashboard:farmers-update' object.pk %}" class="btn btn-info btn-sm ">
-                                                    <i class="fas fa-pen"></i>
-                                                </a>
+                                                
                                                 {% if not object.non_deletetable %}
-                                                <form action="{% url 'dashboard:farmers-delete' object.pk %}"  method="post">
+                                                <form action="{% url 'dashboard:fatrates-delete' object.pk %}"  method="post">
                                                 {% csrf_token %}
                                                     <button class="btn btn-danger btn-sm delete-link ml-2" data-tooltip="tooltip" title="Delete">
                                                         <i class="far fa-trash-alt"></i>

@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 #         return self.full_name
 
 class Employee(models.Model):
-    emp_email = models.CharField(max_length=50, blank=True )
+    emp_email = models.CharField(max_length=50, blank=True , null=True)
     emp_pwd = models.  CharField(max_length=255, blank=True)
     emp_name = models.CharField(max_length=50, blank=True)
     emp_contact = models.PositiveBigIntegerField(blank=True)
@@ -32,13 +32,42 @@ class Employee(models.Model):
     def __str__(self):
         return self.emp_name
     
+class Commission(models.Model):
+    Commission_amt = models.PositiveIntegerField(null=True)
+    commission_pay_date = models.PositiveIntegerField(blank=True)
+    admin_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='commission')
+    employee_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='commission', blank=True)
+
+    class Meta:
+        verbose_name = "Commission"
+        verbose_name_plural = "Commissions"
+        ordering = ('id',)
+
+    def __str__(self):
+        return self.Commission_amt
+
+class FatRate(models.Model):
+    type_of_milk = models.TextField(max_length=50, null=True)
+    rate = models.PositiveBigIntegerField()
+    rate_set_date = models.DateField(blank=True, null=True)
+    admin_id =  models.ForeignKey(User, on_delete=models.CASCADE, related_name='fatrate', blank=False)  
+    is_published = models.BooleanField(default=False) 
+
+    class Meta:
+        verbose_name = "FatRate"
+        verbose_name_plural = "FatRates"
+        ordering = ('id',)
+
+    def __str__(self):
+        return self.rate
+
 class Milk(models.Model):
-    milk_type = models.CharField(max_length=50)
     fat =  models.PositiveIntegerField()
-    rate = models.PositiveIntegerField()
+    fat_rate = models.PositiveIntegerField(null=True)
     qty = models.PositiveIntegerField()
     date = models.DateField(null=True, blank=True)
-    emp_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='employee')
+    emp_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='milk', blank=True)
+    fatrate_id = models.ForeignKey(FatRate, on_delete=models.CASCADE, related_name='milk', blank=True, null=True)
 
     class Meta:
         verbose_name = "Milk"
@@ -54,7 +83,7 @@ class Farmer(models.Model):
     farmer_email = models.CharField(max_length=50)
     farmer_address = models.CharField(max_length=100)
     farmer_contact = models.PositiveBigIntegerField()
-    admin_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='admin')
+    admin_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='farmer', blank=True,null=True)
 
     class Meta:
         verbose_name = "Farmer"
@@ -67,4 +96,13 @@ class Farmer(models.Model):
 class Payment(models.Model):
     payment_date = models.DateField()
     amt = models.PositiveIntegerField()
-    
+    farmer_id = models.ForeignKey(Farmer, on_delete=models.CASCADE, related_name='payment', blank=True, null=True)
+    admin_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payment', blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Payment"
+        verbose_name_plural = "Payments"
+        ordering = ("id",)
+
+    def __str__(self):
+        return self.amt
