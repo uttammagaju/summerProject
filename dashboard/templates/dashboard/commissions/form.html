@@ -1,0 +1,43 @@
+{% extends 'dashboard/base.html' %}
+
+{% block main %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Commission</h6>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{% url 'dashboard:commissions-create' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group mt-3 ">
+                <input type="number" class="form-control" name="commission_amt" placeholder="Commission Amount">
+            </div>
+            <div class="form-group  mt-3">
+                <input type="date" class="form-control"  name="commission_pay_date" placeholder="Pay Date">
+            </div>
+            <div class="form-group mt-3">
+                <select class="form-control" name="admin_id" placeholder="Admin Id">
+                    <option value="">Select Admin ID</option>
+                    {% for admin in admins %}
+                    <option value="{{ admin.id }}">{{ admin.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group mt-3">
+                <select class="form-control" name="emp_id" placeholder="Employee Id">
+                    <option value="">Select Employee ID</option>
+                    {% for employee in employees %}
+                    <option value="{{ employee.id }}">{{ employee.emp_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    {% if msg %}
+    <h1>{{msg}}</h1>
+    {% endif %}
+</div>
+</div>
+
+{% endblock main %}

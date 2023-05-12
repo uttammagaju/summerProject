@@ -1,0 +1,56 @@
+{% extends 'dashboard/base.html' %}
+
+{% block main %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Farmer</h6>
+    </div>
+    <div class="card-body">
+        <form method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group mt-3 ">
+                <input type="email" class="form-control" id="inputEmail4" name="farmer_email" placeholder="Email"
+                    value="{{ farmer.farmer_email }}">
+            </div>
+            <div class="form-group  mt-3">
+                <input type="text" class="form-control" id="inputPassword4" name="farmer_pwd" placeholder="Password"
+                    value="{{ farmer.farmer_pwd }}">
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="text" class="form-control" id="inputAddress" name="farmer_name" placeholder="Full Name"
+                    value="{{ farmer.farmer_name }}">
+            </div>
+            <div class="form-group mt-3">
+                <input type="text" class="form-control" id="inputAddress2" name="farmer_contact" placeholder="Contact"
+                    value="{{ farmer.farmer_contact }}">
+            </div>
+            <div class="form-group mt-3">
+                <input type="text" class="form-control" id="inputAddress2" name="farmer_address" placeholder="Address"
+                    value="{{ farmer.farmer_address }}">
+            </div>
+            <div class="form-group mt-3">
+                <select class="form-control" id="inputAddress2" name="admin_id" placeholder="Admin Id">
+                    {% for admin in admins %}
+                    {% if admin.id == farmer.admin_id %}
+                    <option value="{{ admin.id }}" selected>{{ admin.username }}</option>
+                    {% else %}
+                    <option value="{{ admin.id }}">{{ admin.username }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+
+            </div>
+
+    </div>
+    <button type="submit" class="btn btn-primary">update</button>
+    </form>
+    {% if msg %}
+    <h1>{{msg}}</h1>
+    {% endif %}
+</div>
+</div>
+
+{% endblock main %}

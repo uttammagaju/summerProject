@@ -1,0 +1,52 @@
+<!-- {% extends 'dashboard/base.html' %}
+
+{% block main %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Fat Rate</h6>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{% url 'dashboard:fatrates-create' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group mt-3">
+                <input type="text" name="rate" placeholder="Rate" value="{{ fatrates.type_of_milk }}">
+            </div>
+            <div class="form-group mt-3">
+                <input type="text" name="rate" placeholder="Rate" value="{{ fatrates.rate }}">
+            </div>
+            <div class="form-group mt-3">
+                <input type="date" name="rate_set_date" placeholder="Rate Set Date" value="{{ fatrates.rate_set_date|date:'Y-m-d' }}">
+            </div>
+            <div class="form-group mt-3">
+                <select class="form-control" id="inputAddress2" name="admin_id" placeholder="Admin Id" >
+                    {% for admin in admins %}
+                        {% if admin.id == fatrates.admin_id %}
+                            <option value="{{ admin.id }}" selected>{{ admin.username }}</option>
+                        {% else %}
+                            <option value="{{ admin.id }}">{{ admin.username }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                
+            </div>
+            <div class="form-group mt-3">
+                <label >Is Published</label>
+                {% if fatrates.ispublished == True %}
+                <input type="checkbox" name="is_published" value="True" checked>
+                {% else%}
+                <input type="checkbox" name="is_published" value="False">
+                {% endif%}
+            </div>
+
+
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    {% if msg %}
+    <h1>{{msg}}</h1>
+    {% endif %}
+</div>
+</div>
+
+{% endblock main %} -->

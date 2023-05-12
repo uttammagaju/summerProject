@@ -1,0 +1,55 @@
+{% extends 'dashboard/base.html' %}
+
+{% block main %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Employee</h6>
+    </div>
+    <div class="card-body">
+        <form method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group mt-3 ">
+                    <input type="email" class="form-control" id="inputEmail4" name="emp_email" placeholder="Email" value="{{ employee.emp_email }}">
+                </div>
+                <div class="form-group  mt-3">
+                    <input type="text" class="form-control" id="inputPassword4" name="emp_pwd"
+                        placeholder="Password" value="{{ employee.emp_pwd }}">
+                </div>
+            </div>
+            <div class="form-group mt-3">
+                <input type="text" class="form-control" id="inputAddress" name="emp_name" placeholder="Employee Name" value="{{ employee.emp_name }}">
+            </div>
+            <div class="form-group mt-3">
+                <input type="text" class="form-control" id="inputAddress2" name="emp_contact" placeholder="Contact" value="{{ employee.emp_contact }}">
+            </div>
+            <div class="form-group mt-3">
+                <input type="text" class="form-control" id="inputAddress2" name="salary" placeholder="Salary" value="{{ employee.salary }}">
+            </div>
+            <div class="form-group mt-3">              
+                <input type="date" class="form-control" id="inputAddress2" name="reg_date" placeholder="Register Date" value="{{ employee.reg_date|date:'Y-m-d'}}">
+            </div>
+            <div class="form-group mt-3">
+                <select class="form-control" id="inputAddress2" name="admin_id" placeholder="Admin Id" >
+                    {% for admin in admins %}
+                        {% if admin.id == employee.admin_id %}
+                            <option value="{{ admin.id }}" selected>{{ admin.username }}</option>
+                        {% else %}
+                            <option value="{{ admin.id }}">{{ admin.username }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                
+            </div>
+            
+    </div>
+    <button type="submit" class="btn btn-primary">update</button>
+    </form>
+    {% if msg %}
+    <h1>{{msg}}</h1>
+    {% endif %}
+</div>
+</div>
+
+{% endblock main %}

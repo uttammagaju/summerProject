@@ -1,0 +1,53 @@
+{% extends 'dashboard/base.html' %}
+
+{% block main %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Employee</h6>
+    </div>
+    <div class="card-body">
+        <form method="post" action="" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group mt-3 ">
+                <label for="">Amount</label>
+                <input type="number" class="form-control"  name="commission_amt" value="{{ commission.commission_amt }}">
+            </div>
+            <div class="form-group  mt-3">
+                <label for="">pay Date</label>
+                <input type="date" class="form-control" name="commission_pay_date" value="{{ commission.commission_pay_date|date:'Y-m-d' }}">
+            </div>
+            <div class="form-group mt-3">
+                <label for="">Admin Id</label>
+                <select class="form-control" name="admin_id" >
+                    {% for admin in admins %}
+                    {% if admin.id == commission.admin_id %}
+                    <option value="{{ admin.id }}" selected>{{ admin.username }}</option>
+                    {% else %}
+                    <option value="{{ admin.id }}">{{ admin.username }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group mt-3">
+                <label for="">Employee Id</label>
+                <select class="form-control"  name="emp_id" >
+                    {% for employee in employees %}
+                    {% if employee.id == commission.emp_id %}
+                    <option value="{{ employee.id }}" selected>{{ employee.emp_name }}</option>
+                    {% else %}
+                    <option value="{{ employee.id }}">{{ employee.emp_name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+    </div>
+    <button type="submit" class="btn btn-primary">update</button>
+    </form>
+    {% if msg %}
+    <h1>{{msg}}</h1>
+    {% endif %}
+</div>
+</div>
+
+{% endblock main %}

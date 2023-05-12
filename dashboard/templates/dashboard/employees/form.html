@@ -1,0 +1,52 @@
+{% extends 'dashboard/base.html' %}
+
+{% block main %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Employee</h6>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{% url 'dashboard:employees-create' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group mt-3 ">
+                    <input type="email" class="form-control" id="inputEmail4" name="emp_email" placeholder="Email">
+                </div>
+                <div class="form-group  mt-3">
+                    <input type="text" class="form-control" id="inputPassword4" name="emp_pwd"
+                        placeholder="Password">
+                </div>
+            </div>
+            <div class="form-group mt-3">
+                <input type="text" class="form-control" id="inputAddress" name="emp_name" placeholder="Employee Name">
+            </div>
+            <div class="form-group mt-3">
+                <input type="text" class="form-control" id="inputAddress2" name="emp_contact" placeholder="Contact">
+            </div>
+            <div class="form-group mt-3">
+                <input type="text" class="form-control" id="inputAddress2" name="salary" placeholder="Salary">
+            </div>
+            <div class="form-group mt-3">
+                <input type="date" class="form-control" id="inputAddress2" name="reg_date" placeholder="Register Date">
+            </div>
+            <div class="form-group mt-3">
+                <select class="form-control" id="inputAddress2" name="admin_id" placeholder="Admin Id">
+                    <option value="">Select Admin ID</option>
+                    {% for admin in admins %}
+                    <option value="{{ admin.id }}">{{ admin.username }}</option>
+                    {% endfor %}
+                </select>
+                
+            </div>
+            
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    {% if msg %}
+    <h1>{{msg}}</h1>
+    {% endif %}
+</div>
+</div>
+
+{% endblock main %}
