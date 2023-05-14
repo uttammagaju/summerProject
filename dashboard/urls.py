@@ -34,8 +34,14 @@ urlpatterns = [
     path('milk/<int:pk>/delete',views.milkDeleteView, name='milk-delete'),
 
     #Commission
-    path('commission',views.CommissionListView.as_view(), name = 'commissions-list'),
-    path('commission/create',views.commissionCreateView, name = 'commissions-create'),
-    path('commission/<int:pk>/update',views.commissionUpdateView, name = 'commissions-update'),
-    path('commission/<int:pk>/delete',views.commissionDeleteView, name='commissions-delete'),
+    path('commissions',views.CommissionListView.as_view(), name = 'commissions-list'),
+    path('commissions/create',views.commissionCreateView, name = 'commissions-create'),
+    path('commissions/<int:pk>/update',views.commissionUpdateView, name = 'commissions-update'),
+    path('commissions/<int:pk>/delete',views.commissionDeleteView, name='commissions-delete'),
+
+    #Commission
+    path('payments', views.PaymentListView.as_view(), name = 'payments-list'),
+    path('payments/create',views.paymentCreateView, name = 'payments-create'),
+    path('payments/<int:pk>/update',views.paymentUpdateView, name = 'payments-update'),
+    path('payments/<int:pk>/delete',views.paymentDeleteView, name='payments-delete'),
 ]

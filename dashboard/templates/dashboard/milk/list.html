@@ -24,6 +24,7 @@
                                         <th>Date</th>
                                         <th>Fill By</th>
                                         <th>Type of Milk</th>
+                                        <th>Farmer</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -38,6 +39,7 @@
                                         <td>{{ object.date }}</td>
                                         <td>{{ object.emp_id }}</td>
                                         <td>{{ object.fatrate_id }}</td>
+                                        <td>{{ object.farmer_id }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <a href="{% url 'dashboard:milk-update' object.pk %}" class="btn btn-info btn-sm ">

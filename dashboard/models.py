@@ -84,7 +84,7 @@ class Milk(models.Model):
     date = models.DateField(null=True, blank=True)
     emp_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='milk', blank=True)
     fatrate_id = models.ForeignKey(FatRate, on_delete=models.CASCADE, related_name='milk', blank=True, null=True)
-    farmer_id = models.ForeignKey(Farmer, on_delete=models.CASCADE, related_name='milk', blank=True)
+    farmer_id = models.ForeignKey(Farmer, on_delete=models.CASCADE, related_name='milk', blank=True, null=True)
 
     class Meta:
         verbose_name = "Milk"
@@ -95,10 +95,10 @@ class Milk(models.Model):
         return self.fat
     
 class Payment(models.Model):
-    payment_date = models.DateField()
     amt = models.PositiveIntegerField()
-    farmer_id = models.ForeignKey(Farmer, on_delete=models.CASCADE, related_name='payment', blank=True, null=True)
+    payment_date = models.DateField()
     admin_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='payment', blank=True, null=True)
+    farmer_id = models.ForeignKey(Farmer, on_delete=models.CASCADE, related_name='payment', blank=True, null=True)
 
     class Meta:
         verbose_name = "Payment"

@@ -4,7 +4,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Employee</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Milk</h6>
     </div>
     <div class="card-body">
         <form method="post" action="" enctype="multipart/form-data">
@@ -57,7 +57,18 @@
                 </select>
 
             </div>
-
+            <div class="form-group mt-3">
+                <label for="">Farmer Id</label>
+                <select class="form-control"  name="farmer_id" >
+                    {% for farmer in farmers %}
+                    {% if farmer.id == milk.farmer_id %}
+                    <option value="{{ farmer.id }}" selected>{{ farmer.farmer_name }}</option>
+                    {% else %}
+                    <option value="{{ farmer.id }}">{{ farmer.farmer_name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
 
     </div>
     <button type="submit" class="btn btn-primary">update</button>

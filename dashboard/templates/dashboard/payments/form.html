@@ -1,0 +1,43 @@
+{% extends 'dashboard/base.html' %}
+
+{% block main %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Payment</h6>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{% url 'dashboard:payments-create' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group mt-3 ">
+                <input type="number" class="form-control" name="amt" placeholder="Amount">
+            </div>
+            <div class="form-group  mt-3">
+                <input type="date" class="form-control"  name="payment_date" placeholder="Payment Date">
+            </div>
+            <div class="form-group mt-3">
+                <select class="form-control" name="admin_id" placeholder="Admin Id">
+                    <option value="">Select Admin ID</option>
+                    {% for admin in admins %}
+                    <option value="{{ admin.id }}">{{ admin.username }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group mt-3">
+                <select class="form-control" name="farmer_id" placeholder="Farmer Id">
+                    <option value="">Select Farmer ID</option>
+                    {% for farmer in farmers %}
+                    <option value="{{ farmer.id }}">{{ farmer.farmer_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    {% if msg %}
+    <h1>{{msg}}</h1>
+    {% endif %}
+</div>
+</div>
+
+{% endblock main %}

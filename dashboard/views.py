@@ -212,14 +212,17 @@ def milkCreateView(request):
         emp = Employee.objects.get(id=emp_id)
         fatrate_id = request.POST.get('fatrate_id')
         fatrate = FatRate.objects.get(id=fatrate_id)
+        farmer_id = request.POST.get('farmer_id')
+        farmer = Farmer.objects.get(id=farmer_id)
         Milk.objects.create(fat = fat, fat_rate = fat_rate ,qty= qty, 
-                        date = date,fatrate_id = fatrate, emp_id = emp)
+                        date = date,fatrate_id = fatrate, emp_id = emp, farmer_id = farmer)
         return redirect(reverse_lazy('dashboard:milk-list'))
     else:
         return render(request, "dashboard/milk/form.html",
                   {
                     'employees': Employee.objects.all(),
-                    'fatrates' : FatRate.objects.all()
+                    'fatrates' : FatRate.objects.all(),
+                    'farmers'  : Farmer.objects.all()
                   }
                   )
     
@@ -228,19 +231,22 @@ def milkUpdateView(request, pk):
     milk = Milk.objects.get(pk=pk)
     employees = Employee.objects.all()
     fatrates = FatRate.objects.all()
+    farmers = Farmer.objects.all()
     if request.method == "POST":
         milk.fat = request.POST.get('fat') 
         milk.fat_rate = request.POST.get('fat_rate')
         milk.qty = request.POST.get('qty')
         milk.date = request.POST.get('date')
-        milk.emp_id =  Employee.objects.get(pk=request.POST['emp_id '])
+        milk.emp_id =  Employee.objects.get(pk=request.POST['emp_id'])
         milk.fatrate_id =  FatRate.objects.get(pk=request.POST['fatrate_id'])
+        milk.farmer_id =  Farmer.objects.get(pk=request.POST['farmer_id'])
         milk.save()
         return redirect(reverse_lazy('dashboard:milk-list'))
     return render(request,'dashboard/milk/update_Form.html',
                   {'employees':employees,
                    'milk':milk,
                    'fatrates':fatrates,
+                   'farmers': farmers,
                    })
 
 @login_required
@@ -280,7 +286,7 @@ def commissionUpdateView(request, pk):
     employees = Employee.objects.all()
     admins = User.objects.all()
     if request.method == "POST":
-        commissions.Commission_amt = request.POST.get('Commission_amt') 
+        commissions.commission_amt = request.POST.get('Commission_amt') 
         commissions.commission_pay_date = request.POST.get('commission_pay_date')
         commissions.admin_id =  User.objects.get(pk=request.POST['admin_id'])
         commissions.emp_id =  Employee.objects.get(pk=request.POST['emp_id'])
@@ -297,3 +303,52 @@ def commissionDeleteView(request, pk):
     commission = Commission.objects.get(pk=pk)
     commission.delete()
     return HttpResponseRedirect(reverse('dashboard:commissions-list'))
+
+#Payment
+class PaymentListView(LoginRequiredMixin,ListView):
+    template_name = 'dashboard/payments/list.html'
+    model = Payment
+
+@login_required
+def paymentCreateView(request):
+    n=''
+    if request.method == "POST":
+        amt = request.POST.get('amt') 
+        payment_date = request.POST.get('payment_date')
+        admin_id = request.POST.get('admin_id')
+        admin = User.objects.get(id=admin_id)
+        farmer_id = request.POST.get('farmer_id')
+        farmer = Farmer.objects.get(id=farmer_id)
+        Payment.objects.create(amt =amt,payment_date =payment_date, admin_id=admin, farmer_id = farmer)
+        return redirect(reverse_lazy('dashboard:payments-list'))
+    else:
+        return render(request, "dashboard/payments/form.html",
+                  {
+                    'farmers': Farmer.objects.all(),
+                    'admins' : User.objects.all()
+                  }
+                  )
+    
+@login_required
+def paymentUpdateView(request, pk):
+    payments = Payment.objects.get(pk=pk)
+    farmers = Farmer.objects.all()
+    admins = User.objects.all()
+    if request.method == "POST":
+        payments.amt = request.POST.get('amt') 
+        payments.payment_date = request.POST.get('payment_date')
+        payments.admin_id =  User.objects.get(pk=request.POST['admin_id'])
+        payments.farmer_id =  Farmer.objects.get(pk=request.POST['farmer_id'])
+        payments.save()
+        return redirect(reverse_lazy('dashboard:payments-list'))
+    return render(request,'dashboard/payments/update_Form.html',
+                  {'farmers':farmers,
+                   'payment':payments,
+                   'admins':admins,
+                   })
+
+@login_required
+def paymentDeleteView(request, pk):
+    payment = Payment.objects.get(pk=pk)
+    payment.delete()
+    return HttpResponseRedirect(reverse('dashboard:payments-list'))

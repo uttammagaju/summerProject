@@ -43,7 +43,14 @@
                     {% endfor %}
                 </select>
             </div>
-
+            <div class="form-group mt-3">
+                <select class="form-control" name="farmer_id" placeholder="Farmer Id">
+                    <option value="">Select Farmer ID</option>
+                    {% for farmer in farmers %}
+                    <option value="{{ farmer.id }}">{{ farmer.farmer_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
     </form>
