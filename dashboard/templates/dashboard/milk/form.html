@@ -26,13 +26,13 @@
 
             </div> -->
             <div class="form-group mt-3">
-                <input type="text" class="form-control" id="inputAddress2" name="qty" placeholder="Quantity">
+                <input type="" class="form-control" id="inputAddress2" name="qty" placeholder="Quantity" value="{{ qty }}">
                 {% if errors.qty %}
                 <p class="error">{{ errors.qty}}</p>
                 {% endif %}
             </div>
             <div class="form-group mt-3">
-                <input type="date" class="form-control" id="inputAddress2" name="date" placeholder="Date">
+                <input type="date" class="form-control" id="inputAddress2" name="date" placeholder="Date" value="{{ date }}">
                 {% if errors.date %}
                 <p class="error">{{ errors.date}}</p>
                 {% endif %}
@@ -54,16 +54,13 @@
             </div>
             <div class="form-group mt-3">
                 <select class="form-control" name="farmer_id" placeholder="Farmer Id">
-
-
-                    <span class="form-error-text">{{ form.errors|striptags|safe}}</span>
                     {% if emp_id %}
                     <option value="{{ farmer_id }}">{{ farmer_id }}</option>
                     {% else %}
                     <option value="">Select Farmer</option>
                     {% endif%}
                     {% for farmer in farmers %}
-                    <option value="{{ farmer.id }}">{{ farmer.farmer_name }}</option>
+                        <option value="{{ farmer.id }}">{{ farmer.farmer_name }}</option>
                     {% endfor %}
                 </select>
                 {% if errors.farmer_id %}
