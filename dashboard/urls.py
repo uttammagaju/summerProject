@@ -21,11 +21,11 @@ urlpatterns = [
     path('farmers/<int:pk>/update',views.farmerUpdateView, name = 'farmers-update'),
     path('farmers/<int:pk>/delete',views.farmerDeleteView, name='farmers-delete'),
 
-    #FatRate
-    path('fatrates',views.FatRateListView.as_view(), name = 'fatrates-list'),
-    path('fatrates/create',views.fatrateCreateView, name = 'fatrates-create'),
+    # #FatRate
+    # path('fatrates',views.FatRateListView.as_view(), name = 'fatrates-list'),
+    # path('fatrates/create',views.fatrateCreateView, name = 'fatrates-create'),
     # path('fatrates/<int:pk>/update',views.fatrateUpdateView, name = 'fatrates-update'),
-    path('fatrates/<int:pk>/delete',views.fatrateDeleteView, name='fatrates-delete'),
+    # path('fatrates/<int:pk>/delete',views.fatrateDeleteView, name='fatrates-delete'),
 
     #Milk
     path('milk',views.MilkListView.as_view(), name = 'milk-list'),

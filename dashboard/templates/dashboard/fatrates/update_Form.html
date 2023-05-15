@@ -1,4 +1,4 @@
-<!-- {% extends 'dashboard/base.html' %}
+{% extends 'dashboard/base.html' %}
 
 {% block main %}
 
@@ -9,9 +9,6 @@
     <div class="card-body">
         <form method="post" action="{% url 'dashboard:fatrates-create' %}" enctype="multipart/form-data">
             {% csrf_token %}
-            <div class="form-group mt-3">
-                <input type="text" name="rate" placeholder="Rate" value="{{ fatrates.type_of_milk }}">
-            </div>
             <div class="form-group mt-3">
                 <input type="text" name="rate" placeholder="Rate" value="{{ fatrates.rate }}">
             </div>
@@ -32,7 +29,7 @@
             </div>
             <div class="form-group mt-3">
                 <label >Is Published</label>
-                {% if fatrates.ispublished == True %}
+                {% if fatrates.is_published == True %}
                 <input type="checkbox" name="is_published" value="True" checked>
                 {% else%}
                 <input type="checkbox" name="is_published" value="False">
@@ -49,4 +46,4 @@
 </div>
 </div>
 
-{% endblock main %} -->
+{% endblock main %}

@@ -14,16 +14,6 @@
                 <input type="number" class="form-control" value="{{ milk.fat }}" name="fat" >
             </div>
             <div class="form-group mt-3">
-                <label >Fat Rate</label>
-                <select class="form-control"  name="fat_rate" >
-                    <option value="{{ milk.fat_rate }}">{{ milk.fat_rate }} {{ milk.fatrate_id }}</option>
-                    {% for fatrate in fatrates %}
-                    <option value="{{ fatrate.rate }}">{{ fatrate.rate }} {{fatrate.type_of_milk}}</option>
-                    {% endfor %}
-                </select>
-
-            </div>
-            <div class="form-group mt-3">
                 <label >Quantity</label>
                 <input type="number" class="form-control"  name="qty" value="{{ milk.qty }}" >
             </div>
@@ -44,19 +34,19 @@
                 </select>
 
             </div>
-            <div class="form-group mt-3">
-                <label >Type of Milk</label>
+            <!-- <div class="form-group mt-3">
+                <label >Rate</label>
                 <select class="form-control"  name="fatrate_id">
                     {% for fatrate in fatrates %}
                         {% if fatrate.id == milk.fatrate_id %}
-                            <option value="{{ fatrate.id }}" selected>{{ fatrate.type_of_milk }}</option>
+                            <option value="{{ fatrate.id }}" selected>{{ fatrate.rate }}</option>
                         {% else %}
-                            <option value="{{ fatrate.id }}">{{ fatrate.type_of_milk }}</option>
+                            <option value="{{ fatrate.id }}">{{ fatrate.rate }}</option>
                         {% endif %}
                     {% endfor %}
                 </select>
 
-            </div>
+            </div> -->
             <div class="form-group mt-3">
                 <label for="">Farmer Id</label>
                 <select class="form-control"  name="farmer_id" >

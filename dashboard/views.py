@@ -6,6 +6,7 @@ from django.urls import reverse_lazy,reverse
 from django.views.generic import TemplateView,ListView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import date
 
 from .forms import *
 from . models import *
@@ -146,39 +147,36 @@ def farmerDeleteView(request, pk):
     farmer.delete()
     return HttpResponseRedirect(reverse('dashboard:farmers-list'))
 
-#Milk
-class FatRateListView(ListView):
-    template_name = 'dashboard/fatrates/list.html'
-    model = FatRate
+# #Fatrate
+# class FatRateListView(ListView):
+#     template_name = 'dashboard/fatrates/list.html'
+#     model = FatRate
 
-@login_required
-def fatrateCreateView(request):
-    n=''
-    if request.method == "POST":
-        type_of_milk = request.POST.get('type_of_milk') 
-        rate = request.POST.get('rate')
-        rate_set_date = request.POST.get('rate_set_date')
-        admin_id = request.POST.get('admin_id')
-        admin = User.objects.get(id=admin_id)
-        is_published = request.POST.get('is_published',False) == 'True'
-        FatRate.objects.create(type_of_milk = type_of_milk, rate = rate , rate_set_date= rate_set_date, admin_id = admin, is_published = is_published)
-        return redirect(reverse_lazy('dashboard:fatrates-list'))
-    else:
-        return render(request, "dashboard/fatrates/form.html",
-                  {
-                    'admins':User.objects.all(),
-                  }
-                  )
+# @login_required
+# def fatrateCreateView(request):
+#     n=''
+#     if request.method == "POST":
+#         rate = request.POST.get('rate')
+#         rate_set_date = request.POST.get('rate_set_date')
+#         admin_id = request.POST.get('admin_id')
+#         admin = User.objects.get(id=admin_id)
+#         is_published = request.POST.get('is_published',False) == 'True'
+#         FatRate.objects.create( rate = rate , rate_set_date= rate_set_date, admin_id = admin, is_published = is_published)
+#         return redirect(reverse_lazy('dashboard:fatrates-list'))
+#     else:
+#         return render(request, "dashboard/fatrates/form.html",
+#                   {
+#                     'admins':User.objects.all(),
+#                   }
+#                   )
 
 # @login_required
 # def fatrateUpdateView(request, pk):
 #     fatrates = FatRate.objects.get(pk=pk)
 #     admins = User.objects.all()
 #     if request.method == "POST":
-#         fatrates.type_of_milk= request.POST['type_of_milk']
 #         fatrates.rate = request.POST['rate']
 #         fatrates.rate_set_date = request.POST['rate_set_date']
-#         fatrates.emp_contact = request.POST['emp_contact']
 #         fatrates.admin_id = User.objects.get(pk=request.POST['admin_id'])
 #         fatrates.is_published = request.POST['is_published',False] == 'True'
 #         fatrates.save()
@@ -189,11 +187,11 @@ def fatrateCreateView(request):
 #                    'rate_set_date':fatrates.rate_set_date.isoformat()
 #                    })
 
-@login_required
-def fatrateDeleteView(request, pk):
-    fatrate = FatRate.objects.get(pk=pk)
-    fatrate.delete()
-    return HttpResponseRedirect(reverse('dashboard:fatrates-list'))
+# @login_required
+# def fatrateDeleteView(request, pk):
+#     fatrate = FatRate.objects.get(pk=pk)
+#     fatrate.delete()
+#     return HttpResponseRedirect(reverse('dashboard:fatrates-list'))
 
 #Milk
 class MilkListView(LoginRequiredMixin,ListView):
@@ -203,25 +201,66 @@ class MilkListView(LoginRequiredMixin,ListView):
 @login_required
 def milkCreateView(request):
     n=''
+    fatrate=''
     if request.method == "POST":
         fat = request.POST.get('fat') 
-        fat_rate = request.POST.get('fat_rate')
         qty = request.POST.get('qty')
-        date = request.POST.get('date')
+        date_str = request.POST.get('date')
         emp_id = request.POST.get('emp_id')
         emp = Employee.objects.get(id=emp_id)
-        fatrate_id = request.POST.get('fatrate_id')
-        fatrate = FatRate.objects.get(id=fatrate_id)
         farmer_id = request.POST.get('farmer_id')
         farmer = Farmer.objects.get(id=farmer_id)
-        Milk.objects.create(fat = fat, fat_rate = fat_rate ,qty= qty, 
-                        date = date,fatrate_id = fatrate, emp_id = emp, farmer_id = farmer)
-        return redirect(reverse_lazy('dashboard:milk-list'))
+        
+        fatrate=''
+        errors ={}
+        #perform validation
+        if not fat:
+            errors['fat'] ='Fat field is required.'
+        elif float(fat)<1:
+            errors['fat'] ='Fat should be negative.'
+        elif float(fat)>15:
+            errors['fat'] ='Fat should be less than 15.'
+            
+
+        if not qty:
+            errors['qty']='Quantity field is required.'
+        elif float(qty)<1:
+            errors['qty']='Quantity field must be greater than 1 or positive'
+        elif float(qty)>=1 and float(qty)<=20:
+            fatrate=14
+        elif float(qty)>20 and float(qty)<=50:
+            fatrate=16
+        elif float(qty)>50 and float(qty)<=100:
+            fatrate=18
+        elif float(qty)>100:
+            fatrate=20
+        
+        if not date_str:
+            errors['date']='Date field is required'
+        else:
+            try: 
+                milk_date = date.fromisoformat(date_str)
+                if milk_date > date.today():
+                    errors['date'] = 'Selected date cannot be in future.' 
+            except ValueError:
+                errors['date'] = 'Invalid date format.'
+
+        if not emp_id:
+            errors['emp_id'] = 'Selected the employee'
+
+        if not farmer_id:
+            errors['farmer_id']= 'Selected the farmer'
+
+        if errors:
+            return render(request,"dashboard/milk/form.html",{'errors': errors,'fat': fat, 'qty': qty,'date': date_str,'emp_id' : emp, 'farmer_id': farmer})
+        else:
+            Milk.objects.create(fat = fat, qty= qty, date = date_str, rate = fatrate, emp_id = emp, farmer_id = farmer)
+            return redirect(reverse_lazy('dashboard:milk-list'))
     else:
         return render(request, "dashboard/milk/form.html",
                   {
                     'employees': Employee.objects.all(),
-                    'fatrates' : FatRate.objects.all(),
+                    # 'fatrates' : FatRate.objects.all(),
                     'farmers'  : Farmer.objects.all()
                   }
                   )
@@ -230,22 +269,22 @@ def milkCreateView(request):
 def milkUpdateView(request, pk):
     milk = Milk.objects.get(pk=pk)
     employees = Employee.objects.all()
-    fatrates = FatRate.objects.all()
+    # fatrates = FatRate.objects.all()
     farmers = Farmer.objects.all()
     if request.method == "POST":
         milk.fat = request.POST.get('fat') 
-        milk.fat_rate = request.POST.get('fat_rate')
+        # milk.rate = request.POST.get('rate')
         milk.qty = request.POST.get('qty')
         milk.date = request.POST.get('date')
         milk.emp_id =  Employee.objects.get(pk=request.POST['emp_id'])
-        milk.fatrate_id =  FatRate.objects.get(pk=request.POST['fatrate_id'])
+        # milk.fatrate_id =  FatRate.objects.get(pk=request.POST['fatrate_id'])
         milk.farmer_id =  Farmer.objects.get(pk=request.POST['farmer_id'])
         milk.save()
         return redirect(reverse_lazy('dashboard:milk-list'))
     return render(request,'dashboard/milk/update_Form.html',
                   {'employees':employees,
                    'milk':milk,
-                   'fatrates':fatrates,
+                #    'fatrates':fatrates,
                    'farmers': farmers,
                    })
 

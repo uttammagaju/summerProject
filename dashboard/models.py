@@ -46,20 +46,19 @@ class Commission(models.Model):
     def __str__(self):
         return self.Commission_amt
 
-class FatRate(models.Model):
-    type_of_milk = models.TextField(max_length=50, null=True)
-    rate = models.PositiveBigIntegerField()
-    rate_set_date = models.DateField(blank=True, null=True)
-    admin_id =  models.ForeignKey(User, on_delete=models.CASCADE, related_name='fatrate', blank=False)  
-    is_published = models.BooleanField(default=False) 
+# class FatRate(models.Model):
+#     rate = models.PositiveBigIntegerField()
+#     rate_set_date = models.DateField(blank=True, null=True)
+#     admin_id =  models.ForeignKey(User, on_delete=models.CASCADE, related_name='fatrate', blank=False)  
+#     is_published = models.BooleanField(default=False) 
 
-    class Meta:
-        verbose_name = "FatRate"
-        verbose_name_plural = "FatRates"
-        ordering = ('id',)
+#     class Meta:
+#         verbose_name = "FatRate"
+#         verbose_name_plural = "FatRates"
+#         ordering = ('id',)
 
-    def __str__(self):
-        return self.type_of_milk
+#     def __int__(self):
+#         return self.rate
 
 class Farmer(models.Model):
     farmer_name = models.CharField(max_length=50)
@@ -79,11 +78,11 @@ class Farmer(models.Model):
 
 class Milk(models.Model):
     fat =  models.FloatField()
-    fat_rate = models.PositiveIntegerField(null=True)
-    qty = models.PositiveIntegerField()
+    qty = models.FloatField()
+    rate = models.PositiveIntegerField(null=True)
     date = models.DateField(null=True, blank=True)
     emp_id = models.ForeignKey(Employee, on_delete=models.CASCADE, related_name='milk', blank=True)
-    fatrate_id = models.ForeignKey(FatRate, on_delete=models.CASCADE, related_name='milk', blank=True, null=True)
+    # fatrate_id = models.ForeignKey(FatRate, on_delete=models.CASCADE, related_name='milk', blank=True, null=True)
     farmer_id = models.ForeignKey(Farmer, on_delete=models.CASCADE, related_name='milk', blank=True, null=True)
 
     class Meta:
@@ -91,7 +90,7 @@ class Milk(models.Model):
         verbose_name_plural = "Milk"
         ordering = ('id',)
 
-    def __Float__(self):
+    def __str__(self):
         return self.fat
     
 class Payment(models.Model):
