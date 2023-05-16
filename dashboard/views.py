@@ -7,11 +7,13 @@ from django.views.generic import TemplateView,ListView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from datetime import date
+import re
 
 from .forms import *
 from . models import *
 
 User = get_user_model()
+# request.session['admin_id'] = User.id
 # Create your views here.
 
 
@@ -50,6 +52,7 @@ class EmployeeListView(LoginRequiredMixin,ListView):
 
 @login_required
 def employeeCreateView(request):
+    # request.session['admin_id']=User.id
     n=''
     if request.method == "POST":
         emp_email = request.POST.get('emp_email') 
@@ -60,9 +63,64 @@ def employeeCreateView(request):
         reg_date= request.POST.get('reg_date')
         admin_id = request.POST.get('admin_id')
         admin = User.objects.get(id=admin_id)
-        Employee.objects.create(emp_email = emp_email, emp_pwd = emp_pwd ,emp_name= emp_name, 
-                        emp_contact = emp_contact, salary = salary, reg_date = reg_date,
-                        admin_id = admin)
+
+        errors = {}
+        #perform Validation
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not emp_email:
+            errors['emp_email'] = 'email field is requied.'
+        elif not re.match(email_pattern,emp_email):
+            errors['emp_email'] = 'email is not valid.'
+        elif Employee.objects.filter(emp_email=emp_email).exists():
+            errors['emp_email'] = 'email is already taken.'
+        
+        password_pattern = r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$'
+        if not emp_pwd:
+            errors['emp_pwd'] = 'email field is required.'
+        elif not re.match(password_pattern , emp_pwd):
+            errors['emp_pwd'] = 'Invalid password format. It must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, and one digit.'
+
+        name_pattern = r'^[A-Za-z\s]+$'
+        if not emp_name:
+            errors['emp_name'] = 'name field is required.'
+        elif not re.match(name_pattern,emp_name):
+            errors['emp_name'] = 'Invalid name'
+
+        contact_pattern = r'^98\d{8}$'
+        if not emp_contact:
+            errors['emp_contact'] = 'contact field is required.'
+        elif not re.match(contact_pattern,emp_contact):
+            errors['emp_contact'] = 'Invalid contact number format. It must start with "98" and have a length of 10 digits.'
+
+        salary_pattern = r'^[1-9]\d*(\.\d+)?$'
+        if not salary:
+            errors['salary'] = 'salary field is required.'
+        elif not re.match(salary_pattern, salary):
+            errors['salary'] = 'Invalid salary format. It must be a number.'
+        elif float(salary)>15000:
+            errors['salary'] = 'Invalid salary. Maximum salary is 15000.'
+
+        # reg_date_pattern = r'^\d{4}-\d{2}-\d{2}$'
+        if not reg_date:
+            errors['reg_date'] = 'date filed is required.'
+        else:
+            try: 
+                r_date = date.fromisoformat(reg_date)
+                if r_date > date.today():
+                    errors['reg_date'] = 'Selected date cannot be in future.' 
+            except ValueError:
+                errors['reg_date'] = 'Invalid date format.'
+        
+        if not admin_id:
+            errors['admin_id'] = 'Select  the Admin '
+        
+        if errors:
+            return render(request, 'dashboard/employees/form.html', {'errors':errors,'emp_name': emp_name, 'emp_pwd': emp_pwd, 'emp_name':emp_name, 'emp_contact':emp_contact, 'salary':salary, 'reg_date':reg_date, 'admin_id': admin_id})
+
+        else:
+            Employee.objects.create(emp_email = emp_email, emp_pwd = emp_pwd ,emp_name= emp_name, 
+                            emp_contact = emp_contact, salary = salary, reg_date = reg_date,
+                            admin_id = admin)
         return redirect(reverse_lazy('dashboard:employees-list'))
     else:
         return render(request, "dashboard/employees/form.html",
@@ -113,8 +171,51 @@ def farmerCreateView(request):
         farmer_contact = request.POST.get('farmer_contact')
         admin_id = request.POST.get('admin_id')
         admin = User.objects.get(id=admin_id)
-        Farmer.objects.create(farmer_name = farmer_name, farmer_pwd = farmer_pwd ,farmer_email= farmer_email, 
-                        farmer_address = farmer_address, farmer_contact = farmer_contact, admin_id = admin)
+
+        errors = {}
+        #perform Validation
+        email_pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not farmer_email:
+            errors['farmer_email'] = 'email field is requied.'
+        elif not re.match(email_pattern,farmer_email):
+            errors['farmer_email'] = 'email is not valid.'
+        elif Farmer.objects.filter(farmer_email=farmer_email).exists():
+            errors['farmer_email'] = 'email is already taken.'
+        
+        password_pattern = r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$'
+        if not farmer_pwd:
+            errors['farmer_pwd'] = 'email field is required.'
+        elif not re.match(password_pattern , farmer_pwd):
+            errors['farmer_pwd'] = 'Invalid password format. It must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, and one digit.'
+
+        name_pattern = r'^[A-Za-z\s]+$'
+        if not farmer_name:
+            errors['farmer_name'] = 'name field is required.'
+        elif not re.match(name_pattern,farmer_name):
+            errors['farmer_name'] = 'Invalid name'
+
+        contact_pattern = r'^98\d{8}$'
+        if not farmer_contact:
+            errors['farmer_contact'] = 'contact field is required.'
+        elif not re.match(contact_pattern,farmer_contact):
+            errors['farmer_contact'] = 'Invalid contact number format. It must start with "98" and have a length of 10 digits.'
+
+        address_pattern = r'^\d+\s+([A-Za-z]+\s?)+,\s*\w+,\s*\w+\s*\d*$'
+        if not farmer_address:
+            errors['farmer_address'] = 'address field is required.'
+        elif len(farmer_address) <5 :
+            errors['farmer_address'] = 'Address must contain 5 letter'
+
+        if not admin_id:
+                    errors['admin_id'] = 'Select  the Admin '
+
+        if errors:
+            return render(request,'dashboard/farmers/form.html',{'errors':errors,'farmer_email':farmer_email,'farmer_pwd':farmer_pwd,'farmer_name':farmer_name,
+                                                                'farmer_contact':farmer_contact,'farmer_address':farmer_address,'admin_id':admin_id})
+        
+        else:
+            Farmer.objects.create(farmer_name = farmer_name, farmer_pwd = farmer_pwd ,farmer_email= farmer_email, 
+                            farmer_address = farmer_address, farmer_contact = farmer_contact, admin_id = admin)
         return redirect(reverse_lazy('dashboard:farmers-list'))
     else:
         return render(request, "dashboard/farmers/form.html",

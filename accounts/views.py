@@ -4,6 +4,7 @@ from django.contrib.auth import login,logout
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
 
+
 from .forms import LoginForm
 
 # Create your views here.
@@ -13,9 +14,10 @@ class LoginViews(FormView):
 
     def form_valid(self, form):
         login(self.request, form.instance)
+        self.request.session['admin_id'] = form.instance.id
+        self.request.session['username'] = form.instance.username
         return redirect(reverse_lazy('dashboard:home'))
-
-
+    
 class LogoutViews(FormView):
     def get(self, request, *args, **kwargs):
         logout(self.request)

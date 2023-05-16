@@ -2,6 +2,7 @@
 
 {% block main %}
 
+
 <div class="card shadow mb-4">
     <div class="card-header py-3">
         <h6 class="m-0 font-weight-bold text-primary">Employee</h6>
@@ -10,26 +11,49 @@
         <form method="post" action="{% url 'dashboard:employees-create' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-row">
+
                 <div class="form-group mt-3 ">
-                    <input type="email" class="form-control" id="inputEmail4" name="emp_email" placeholder="Email">
+                    <input type="email" class="form-control" value="{{ emp_email }}" name="emp_email"
+                        placeholder="Email">
+                    {% if errors.emp_email %}
+                    <p class="error">{{ errors.emp_email }}</p>
+                    {% endif %}
                 </div>
                 <div class="form-group  mt-3">
-                    <input type="text" class="form-control" id="inputPassword4" name="emp_pwd"
-                        placeholder="Password">
+                    <input type="text" class="form-control" value="{{ emp_pwd }}" name="emp_pwd" placeholder="Password">
+                    {% if errors.emp_pwd %}
+                    <p class="error">{{ errors.emp_pwd }}</p>
+                    {% endif %}
                 </div>
             </div>
             <div class="form-group mt-3">
-                <input type="text" class="form-control" id="inputAddress" name="emp_name" placeholder="Employee Name">
+                <input type="text" class="form-control" value="" name="emp_name" placeholder="Employee Name">
+                {% if errors.emp_name %}
+                <p class="error">{{ errors.emp_name }}</p>
+                {% endif %}
             </div>
             <div class="form-group mt-3">
-                <input type="text" class="form-control" id="inputAddress2" name="emp_contact" placeholder="Contact">
+                <input type="text" class="form-control" value="{{ emp_contact }}" name="emp_contact"
+                    placeholder="Contact">
+                {% if errors.emp_contact %}
+                <p class="error">{{ errors.emp_contact }}</p>
+                {% endif %}
             </div>
             <div class="form-group mt-3">
-                <input type="text" class="form-control" id="inputAddress2" name="salary" placeholder="Salary">
+                <input type="text" class="form-control" value="{{ salary }}" name="salary" placeholder="Salary">
+                {% if errors.salary %}
+                <p class="error">{{ errors.salary }}</p>
+                {% endif %}
             </div>
             <div class="form-group mt-3">
                 <input type="date" class="form-control" id="inputAddress2" name="reg_date" placeholder="Register Date">
+                {% if errors.reg_date %}
+                <p class="error">{{ errors.reg_date }}</p>
+                {% endif %}
             </div>
+            <!-- <div class="form-group mt-3">
+                <input type="text" class="form-control" id="inputAddress2" name="reg_date" placeholder="admin_id" value="{{ request.session.admin_id }}">
+            </div> -->
             <div class="form-group mt-3">
                 <select class="form-control" id="inputAddress2" name="admin_id" placeholder="Admin Id">
                     <option value="">Select Admin ID</option>
@@ -37,9 +61,11 @@
                     <option value="{{ admin.id }}">{{ admin.username }}</option>
                     {% endfor %}
                 </select>
-                
+                {% if errors.admin_id %}
+                <p class="error">{{ errors.admin_id }}</p>
+                {% endif %}
             </div>
-            
+
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
     </form>
