@@ -2,6 +2,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 # from django.contrib.auth.models import login_required 
+from django.contrib.auth.models import User
 from django.urls import reverse_lazy,reverse
 from django.views.generic import TemplateView,ListView
 from django.contrib.auth import get_user_model
@@ -19,6 +20,8 @@ User = get_user_model()
 
 class DashboardHomeView(LoginRequiredMixin,TemplateView):
     template_name = "dashboard/index.html"
+
+    
 
 
 #Admin
@@ -61,8 +64,8 @@ def employeeCreateView(request):
         emp_contact = request.POST.get('emp_contact')
         salary = request.POST.get('salary')
         reg_date= request.POST.get('reg_date')
-        admin_id = request.POST.get('admin_id')
-        admin = User.objects.get(id=admin_id)
+        admin_id = User.objects.get(id=request.session.get('admin_id'))
+        
 
         errors = {}
         #perform Validation
@@ -76,7 +79,7 @@ def employeeCreateView(request):
         
         password_pattern = r'^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$'
         if not emp_pwd:
-            errors['emp_pwd'] = 'email field is required.'
+            errors['emp_pwd'] = 'password field is required.'
         elif not re.match(password_pattern , emp_pwd):
             errors['emp_pwd'] = 'Invalid password format. It must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, and one digit.'
 
@@ -111,16 +114,14 @@ def employeeCreateView(request):
             except ValueError:
                 errors['reg_date'] = 'Invalid date format.'
         
-        if not admin_id:
-            errors['admin_id'] = 'Select  the Admin '
-        
+              
         if errors:
-            return render(request, 'dashboard/employees/form.html', {'errors':errors,'emp_name': emp_name, 'emp_pwd': emp_pwd, 'emp_name':emp_name, 'emp_contact':emp_contact, 'salary':salary, 'reg_date':reg_date, 'admin_id': admin_id})
+            return render(request, 'dashboard/employees/form.html', {'errors':errors,'emp_email':emp_email, 'emp_name': emp_name, 'emp_pwd': emp_pwd, 'emp_name':emp_name, 'emp_contact':emp_contact, 'salary':salary, 'reg_date':reg_date})
 
         else:
             Employee.objects.create(emp_email = emp_email, emp_pwd = emp_pwd ,emp_name= emp_name, 
                             emp_contact = emp_contact, salary = salary, reg_date = reg_date,
-                            admin_id = admin)
+                            admin_id = admin_id)
         return redirect(reverse_lazy('dashboard:employees-list'))
     else:
         return render(request, "dashboard/employees/form.html",
@@ -302,7 +303,6 @@ class MilkListView(LoginRequiredMixin,ListView):
 @login_required
 def milkCreateView(request):
     n=''
-    fatrate=''
     if request.method == "POST":
         fat = request.POST.get('fat') 
         qty = request.POST.get('qty')
@@ -328,13 +328,13 @@ def milkCreateView(request):
         elif float(qty)<1:
             errors['qty']='Quantity field must be greater than 1 or positive'
         elif float(qty)>=1 and float(qty)<=20:
-            fatrate=14
+            fatrate=14.0
         elif float(qty)>20 and float(qty)<=50:
-            fatrate=16
+            fatrate=15.0
         elif float(qty)>50 and float(qty)<=100:
-            fatrate=18
-        elif float(qty)>100:
-            fatrate=20
+            fatrate=16.0
+        elif float(qty)>150:
+            fatrate=20.0
         
         if not date_str:
             errors['date']='Date field is required'
@@ -354,8 +354,43 @@ def milkCreateView(request):
 
         if errors:
             return render(request,"dashboard/milk/form.html",{'errors': errors,'fat': fat, 'qty': qty,'date': date_str,'emp_id' : emp, 'farmer_id': farmer})
+        
         else:
+            admin = User.objects.get(id=request.session.get('admin_id')) 
+            #calculate the payment amt
+            amt =float(fat) * float(qty) * float(fatrate)
+
+            #create milk object
             Milk.objects.create(fat = fat, qty= qty, date = date_str, rate = fatrate, emp_id = emp, farmer_id = farmer)
+            #calculate commission
+            fill_date = date.today()
+
+            if Commission.objects.filter(emp_id=emp_id).exists():
+                total_quantity = Milk.objects.filter(emp_id=emp_id, date=fill_date).aggregate(total_qty=models.Sum('qty'))['total_qty']
+                if total_quantity <=500:
+                    commission_rate = 0.1
+                    Commission.objects.filter(emp_id=emp_id).update(commission_amt=total_quantity*commission_rate)
+
+                elif total_quantity > 500:
+                    commission_rate = 0.2
+                    Commission.objects.filter(emp_id=emp_id).update(commission_amt=total_quantity*commission_rate)
+            
+            else:
+                if float(qty) <= 500:
+                    commission_rate = 0.1
+                elif float(qty) >= 1000:
+                    commission_rate = 0.2
+                first_amt = float(qty) * commission_rate
+                Commission.objects.create(commission_amt = first_amt, commission_pay_date = fill_date ,emp_id = emp, admin_id = admin)
+
+           
+                # pay_date = Commission.objects.get('commission_pay_date')
+                # if Commission.object.filter(fill_date = pay_date):
+                #     f
+
+
+            #create payment object
+            Payment.objects.create(amt = amt, admin_id = admin ,payment_date = date_str, farmer_id = farmer, )
             return redirect(reverse_lazy('dashboard:milk-list'))
     else:
         return render(request, "dashboard/milk/form.html",
@@ -468,7 +503,8 @@ def paymentCreateView(request):
                     'admins' : User.objects.all()
                   }
                   )
-    
+
+
 @login_required
 def paymentUpdateView(request, pk):
     payments = Payment.objects.get(pk=pk)

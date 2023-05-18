@@ -22,3 +22,6 @@ class LogoutViews(FormView):
     def get(self, request, *args, **kwargs):
         logout(self.request)
         return redirect(reverse_lazy('accounts:login'))
+
+#employee
+

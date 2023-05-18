@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div class="form-group mt-3">
-                <input type="text" class="form-control" value="" name="emp_name" placeholder="Employee Name">
+                <input type="text" class="form-control" value="{{ emp_name}}" name="emp_name" placeholder="Employee Name">
                 {% if errors.emp_name %}
                 <p class="error">{{ errors.emp_name }}</p>
                 {% endif %}
@@ -46,25 +46,12 @@
                 {% endif %}
             </div>
             <div class="form-group mt-3">
-                <input type="date" class="form-control" id="inputAddress2" name="reg_date" placeholder="Register Date">
+                <input type="date" class="form-control" value="{{ reg_date }}" name="reg_date" placeholder="Register Date">
                 {% if errors.reg_date %}
                 <p class="error">{{ errors.reg_date }}</p>
                 {% endif %}
             </div>
-            <!-- <div class="form-group mt-3">
-                <input type="text" class="form-control" id="inputAddress2" name="reg_date" placeholder="admin_id" value="{{ request.session.admin_id }}">
-            </div> -->
-            <div class="form-group mt-3">
-                <select class="form-control" id="inputAddress2" name="admin_id" placeholder="Admin Id">
-                    <option value="">Select Admin ID</option>
-                    {% for admin in admins %}
-                    <option value="{{ admin.id }}">{{ admin.username }}</option>
-                    {% endfor %}
-                </select>
-                {% if errors.admin_id %}
-                <p class="error">{{ errors.admin_id }}</p>
-                {% endif %}
-            </div>
+           
 
     </div>
     <button type="submit" class="btn btn-primary">Save</button>
