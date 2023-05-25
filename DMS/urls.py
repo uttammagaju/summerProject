@@ -20,6 +20,9 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('employees/', include('employees.urls')),
+    path('employees/accounts/', include('accounts.urls')),
+
     path('dashboard/',include('dashboard.urls')),
     path('dashboard/accounts/', include('accounts.urls'))
   

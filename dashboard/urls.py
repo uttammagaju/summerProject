@@ -29,13 +29,13 @@ urlpatterns = [
 
     #Milk
     path('milk',views.MilkListView.as_view(), name = 'milk-list'),
-    path('milk/create',views.milkCreateView, name = 'milk-create'),
+    # path('milk/create',views.milkCreateView, name = 'milk-create'),
     path('milk/<int:pk>/update',views.milkUpdateView, name = 'milk-update'),
     path('milk/<int:pk>/delete',views.milkDeleteView, name='milk-delete'),
 
     #Commission
     path('commissions',views.CommissionListView.as_view(), name = 'commissions-list'),
-    path('commissions/create',views.commissionCreateView, name = 'commissions-create'),
+    # path('commissions/create',views.commissionCreateView, name = 'commissions-create'),
     path('commissions/<int:pk>/update',views.commissionUpdateView, name = 'commissions-update'),
     path('commissions/<int:pk>/delete',views.commissionDeleteView, name='commissions-delete'),
 

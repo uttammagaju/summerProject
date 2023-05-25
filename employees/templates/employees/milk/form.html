@@ -1,0 +1,79 @@
+{% extends 'dashboard/base.html' %}
+
+{% block main %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Milk</h6>
+    </div>
+    <div class="card-body">
+        <form method="post" action="{% url 'employees:milk-create' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group  mt-3">
+                <input type="number" class="form-control" id="inputPassword4" name="fat" placeholder="Fat"
+                    value="{{ fat }}">
+                {% if errors.fat %}
+                <p class="error">{{ errors.fat}}</p>
+                {% endif %}
+            </div>
+
+            <!-- <div class="form-group mt-3">
+                <select class="form-control" id="inputAddress2" name="fatrate_id" placeholder="Fat Rate">
+                    {% for fatrate in fatrates %}
+                    <option value="{{ fatrate.rate }}" >{{ fatrate.rate }} </option>
+                    {% endfor %}
+                </select>
+
+            </div> -->
+            <div class="form-group mt-3">
+                <input type="" class="form-control" id="inputAddress2" name="qty" placeholder="Quantity" value="{{ qty }}">
+                {% if errors.qty %}
+                <p class="error">{{ errors.qty}}</p>
+                {% endif %}
+            </div>
+            <div class="form-group mt-3">
+                <input type="date" class="form-control" id="inputAddress2" name="date" placeholder="Date" value="{{ date }}">
+                {% if errors.date %}
+                <p class="error">{{ errors.date}}</p>
+                {% endif %}
+            </div>
+            <!-- <div class="form-group mt-3">
+                <select class="form-control" id="inputAddress2" name="emp_id" placeholder="Added By">
+                    {% if emp_id %}
+                    <option value="{{ emp_id }}">{{ emp_id }}</option>
+                    {% else %}
+                    <option value="">Select Employee</option>
+                    {% endif%}
+                    {% for employee in employees %}
+                    <option value="{{ employee.id }}">{{ employee.emp_name }}</option>
+                    {% endfor %}
+                </select>
+                {% if errors.emp_id %}
+                <p class="error">{{ errors.emp_id}}</p>
+                {% endif %}
+            </div> -->
+            <div class="form-group mt-3">
+                <select class="form-control" name="farmer_id" placeholder="Farmer Id">
+                    {% if emp_id %}
+                    <option value="{{ farmer_id }}">{{ farmer_id }}</option>
+                    {% else %}
+                    <option value="">Select Farmer</option>
+                    {% endif%}
+                    {% for farmer in farmers %}
+                        <option value="{{ farmer.id }}">{{ farmer.farmer_name }}</option>
+                    {% endfor %}
+                </select>
+                {% if errors.farmer_id %}
+                <p class="error">{{ errors.farmer_id}}</p>
+                {% endif %}
+            </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+    {% if msg %}
+    <h1>{{msg}}</h1>
+    {% endif %}
+</div>
+</div>
+
+{% endblock main %}

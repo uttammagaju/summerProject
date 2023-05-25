@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+  <meta name="generator" content="Hugo 0.108.0">
+  <title>Phaijoo Milk Dairy</title>
+  
+  <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
+  <link href="/static/employees/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/static/employees/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="/static/employees/css/dashboard.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Phaijoo Milk Dairy</a>
+    <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
+      data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-nav">
+      <div class="nav-item text-nowrap">
+        <div class="dropdown-divider"></div>
+        <a class="nav-link px-3" href="#" data-toggle="modal" data-target="#logoutModal">
+          <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+          Sign out</a>
+      </div>
+    </div>
+  </header>
+
+  <div id="page-top">
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="position-sticky pt-3 sidebar-sticky">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">
+                <span data-feather="home" class="align-text-bottom"></span>
+                Dashboard
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="file" class="align-text-bottom"></span>
+                Employee
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="shopping-cart" class="align-text-bottom"></span>
+                Farmer
+              </a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="users" class="align-text-bottom"></span>
+                Fat Rate
+              </a>
+            </li> -->
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="bar-chart-2" class="align-text-bottom"></span>
+                Milk
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="layers" class="align-text-bottom"></span>
+                Commission
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span data-feather="layers" class="align-text-bottom"></span>
+                Payment
+              </a>
+            </li>
+          </ul>
+
+
+        </div>
+      </nav>
+
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        {% block main %}
+
+        {% endblock main %}
+
+    </div>
+    </main>
+
+
+    -- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="/employees/accounts/employeelogout">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="/static/employees/js/dashboard.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
+      integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE"
+      crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
+      integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
+      crossorigin="anonymous"></script>
+    <script src="dashboard.js"></script>
+ 
+
+      <!-- Bootstrap core JavaScript-->
+      <script src="/static/employees/vendor/jquery/jquery.min.js"></script>
+      <script src="/static/employees/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  
+      <!-- Core plugin JavaScript-->
+      <script src="/static/employees/vendor/jquery-easing/jquery.easing.min.js"></script>
+  
+      <!-- Custom scripts for all pages-->
+      <script src="/static/employees/js/sb-admin-2.min.js"></script>
+  
+      <!-- Page level plugins -->
+      <script src="/static/employees/vendor/datatables/jquery.dataTables.min.js"></script>
+      <script src="/static/employees/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  
+      <!-- Page level custom scripts -->
+      <script src="/static/employees/js/demo/datatables-demo.js"></script>
+
+    <!-- //delete link script with modal popup -->
+
+      <script>
+      $('body').on('click', '.delete-link', function (e) {
+        if (!confirm("are you sure You want to delete? "))
+          e.preventDefault();
+      });
+    </script>
+
+</body>
+
+</html>
