@@ -114,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-LOGIN_URL =  "/dashboard/accounts/login"
+# LOGIN_URL =  "/dashboard/accounts/login"
 # "/employees/accounts/employeelogin"
     
     

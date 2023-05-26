@@ -30,23 +30,23 @@
                                 </thead>
                                 
                                 <tbody>
-                                    {% for object in object_list %}
+                                    {% for employee in employees %}
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
-                                        <td>{{ object.emp_email }}</td>
-                                        <td>{{ object.emp_pwd }}</td>
-                                        <td>{{ object.emp_name }}</td>
-                                        <td>{{ object.emp_contact }}</td>
-                                        <td>{{ object.salary }}</td>
-                                        <td>{{ object.reg_date }}</td>
-                                        <td>{{ object.admin_id }}</td>
+                                        <td>{{ employee.emp_email }}</td>
+                                        <td>{{ employee.emp_pwd }}</td>
+                                        <td>{{ employee.emp_name }}</td>
+                                        <td>{{ employee.emp_contact }}</td>
+                                        <td>{{ employee.salary }}</td>
+                                        <td>{{ employee.reg_date }}</td>
+                                        <td>{{ employee.admin_id }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{% url 'dashboard:employees-update' object.pk %}" class="btn btn-info btn-sm ">
+                                                <a href="{% url 'dashboard:employees-update' employee.pk %}" class="btn btn-info btn-sm ">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
-                                                {% if not object.non_deletetable %}
-                                                <form action="{% url 'dashboard:employees-delete' object.pk %}"  method="post">
+                                                {% if not employee.non_deletetable %}
+                                                <form action="{% url 'dashboard:employees-delete' employee.pk %}"  method="post">
                                                 {% csrf_token %}
                                                     <button class="btn btn-danger btn-sm delete-link ml-2" data-tooltip="tooltip" title="Delete">
                                                         <i class="far fa-trash-alt"></i>

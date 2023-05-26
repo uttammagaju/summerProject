@@ -15,6 +15,62 @@
 
   <!-- Custom styles for this template -->
   <link href="/static/employees/css/dashboard.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.28.3"></script>
+  <style>
+    .container {
+      margin-top: 50px;
+    }
+    .card {
+      padding: 20px;
+    }
+    .card-header {
+      background-color: #f8f9fa;
+      font-weight: bold;
+    }
+    h2 {
+      margin-top: 0;
+    }
+    .circle-value {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      font-size: 24px;
+      font-weight: bold;
+      color: #fff;
+    }
+    .circle-value.employees {
+      background-color: #007bff;
+    }
+    .circle-value.milk {
+      background-color: #28a745;
+    }
+    .circle-value span {
+      display: block;
+      margin-top: 10px;
+    }
+    #chart {
+      margin-top: 20px;
+    }
+    .chart-labels {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .chart-labels .label {
+      display: flex;
+      align-items: center;
+    }
+    .chart-labels .label .color-box {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+  </style>
 </head>
 
 <body>
@@ -46,18 +102,6 @@
                 Dashboard
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span data-feather="file" class="align-text-bottom"></span>
-                Employee
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span data-feather="shopping-cart" class="align-text-bottom"></span>
-                Farmer
-              </a>
-            </li>
             <!-- <li class="nav-item">
               <a class="nav-link" href="#">
                 <span data-feather="users" class="align-text-bottom"></span>
@@ -65,16 +109,17 @@
               </a>
             </li> -->
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{% url 'employees:milk-list' %}">
                 <span data-feather="bar-chart-2" class="align-text-bottom"></span>
                 Milk
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">
+            <li class="nav-item ">
+              <a class="nav-link " href="{% url 'employees:commission-due' %}" >
                 <span data-feather="layers" class="align-text-bottom"></span>
-                Commission
+                Commission Due
               </a>
+              
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">
@@ -97,7 +142,7 @@
     </main>
 
 
-    -- Logout Modal-->
+   <!-- Logout Modal -->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -116,7 +161,47 @@
             </div>
         </div>
     </div>
+    
+  <script>
+    // Assuming you have JavaScript code to fetch the data and update the values
 
+    // Example code to simulate fetching the data
+    // Replace this with your actual code to fetch the data from a database or API
+    setTimeout(() => {
+      const totalEmployees = 50;
+      const totalMilk = 2500;
+
+      // Update the values in the dashboard
+      document.getElementById('totalEmployees').innerText = totalEmployees;
+      document.getElementById('totalMilk').innerText = totalMilk;
+
+      // Create the chart
+      const options = {
+        chart: {
+          type: 'bar',
+          height: 350
+        },
+        series: [
+          {
+            name: 'Employees',
+            data: [totalEmployees]
+          },
+          {
+            name: 'Milk (liters)',
+            data: [totalMilk]
+          }
+        ],
+        xaxis: {
+          categories: ['']
+        }
+      };
+
+      const chart = new ApexCharts(document.getElementById('chart'), options);
+      chart.render();
+    }, 2000);
+  </script>
+  </body>
+  </html>
 
     <script src="/static/employees/js/dashboard.js"></script>
 
@@ -126,7 +211,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
       integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha"
       crossorigin="anonymous"></script>
-    <script src="dashboard.js"></script>
+    <script src="/static/employees/js/dashboard.js"></script>
  
 
       <!-- Bootstrap core JavaScript-->

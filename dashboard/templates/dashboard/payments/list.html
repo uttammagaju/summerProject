@@ -27,20 +27,20 @@
                                 </thead>
                                 
                                 <tbody>
-                                    {% for object in object_list %}
+                                    {% for payment in payments %}
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
-                                        <td>{{ object.amt }}</td>
-                                        <td>{{ object.payment_date }}</td>
-                                        <td>{{ object.admin_id }}</td>
-                                        <td>{{ object.farmer_id }}</td>
+                                        <td>{{ payment.amt }}</td>
+                                        <td>{{ payment.payment_date }}</td>
+                                        <td>{{ payment.admin_id }}</td>
+                                        <td>{{ payment.farmer_id }}</td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <a href="{% url 'dashboard:payments-update' object.pk %}" class="btn btn-info btn-sm ">
+                                                <a href="{% url 'dashboard:payments-update' payment.pk %}" class="btn btn-info btn-sm ">
                                                     <i class="fas fa-pen"></i>
                                                 </a>
-                                                {% if not object.non_deletetable %}
-                                                <form action="{% url 'dashboard:payments-delete' object.pk %}"  method="post">
+                                                {% if not payment.non_deletetable %}
+                                                <form action="{% url 'dashboard:payments-delete' payment.pk %}"  method="post">
                                                 {% csrf_token %}
                                                     <button class="btn btn-danger btn-sm delete-link ml-2" data-tooltip="tooltip" title="Delete">
                                                         <i class="far fa-trash-alt"></i>

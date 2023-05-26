@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import FormView
-from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render, HttpResponse
 from django.urls import reverse_lazy
 from dashboard.models import *
@@ -28,23 +28,19 @@ class LogoutViews(FormView):
 # employee
 def employeeLogin(request):
     if request.method == "POST":
-        email = request.POST["email"]
-        password = request.POST["password"]
-        user=authenticate(email=email, password=password)
-        employee = Employee.authenticate_employee(email, password)
+        emp_email = request.POST["email"]
+        emp_pwd = request.POST["password"]
+        employee = Employee.authenticate_employee(emp_email, emp_pwd)
 
         if employee is not None:
+            print(employee.emp_email)
             request.session["employee_id"] = employee.id
             request.session["employee_name"] = employee.emp_name
-
-        if user is not None:
-            login(request, user)
-            if request.user.is_superuser:
-                return HttpResponse(" You are not a employee!!")
-            else:
-                return redirect(reverse_lazy("employees:home"))
-        else: 
-            return render(request, "accounts/login.html",)
+            return redirect(reverse_lazy("employees:home"))
+        elif employee is None:
+            return HttpResponse(" You are not a employee")
+        else:
+            return render(request, "accounts/login.html")
     return render(request, "accounts/login.html")
 
 def employeeLogout(request):

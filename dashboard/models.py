@@ -33,7 +33,7 @@ class Employee(models.Model):
     def __str__(self):
         return self.emp_name
     
-    @staticmethod
+    # @staticmethod
     def authenticate_employee(emp_email, emp_pwd):
         try:
             employee = Employee.objects.get(emp_email=emp_email)

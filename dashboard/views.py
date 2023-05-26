@@ -18,10 +18,16 @@ User = get_user_model()
 # Create your views here.
 
 
-class DashboardHomeView(LoginRequiredMixin,TemplateView):
-    template_name = "dashboard/index.html"
+# class DashboardHomeView(LoginRequiredMixin,TemplateView):
+#     template_name = "dashboard/index.html"
 
-    
+@login_required(login_url= '/dashboard/accounts/login')
+def dashboardHomeView(request):
+    #count employee
+    employee_count = Employee.objects.count()
+    #callculate the total milk collected today
+    total_milk_collected = Milk.objects.filter(date = date.today()).aggregate(total_qty=models.Sum('qty'))['total_qty']
+    return render(request,"dashboard/index.html",{'employee_count' : employee_count,'total_milk_collected': total_milk_collected})
 
 
 #Admin
@@ -49,9 +55,11 @@ class DashboardHomeView(LoginRequiredMixin,TemplateView):
 
 
 #Employee
-class EmployeeListView(LoginRequiredMixin,ListView):
-    template_name = 'dashboard/employees/list.html'
-    model = Employee
+@login_required(login_url= '/dashboard/accounts/login')
+def employeeListView(request):
+    employees = Employee.objects.all()
+    return render(request,"dashboard/employees/list.html",{'employees': employees})
+
 
 @login_required(login_url= '/dashboard/accounts/login')
 def employeeCreateView(request):
@@ -122,7 +130,7 @@ def employeeCreateView(request):
             Employee.objects.create(emp_email = emp_email, emp_pwd = emp_pwd ,emp_name= emp_name, 
                             emp_contact = emp_contact, salary = salary, reg_date = reg_date,
                             admin_id = admin_id)
-            User.objects.create_user(username = emp_name, email = emp_email, password= emp_pwd)
+            # User.objects.create_user(username = emp_name, email = emp_email, password= emp_pwd)
         return redirect(reverse_lazy('dashboard:employees-list'))
     else:
         return render(request, "dashboard/employees/form.html",
@@ -131,7 +139,7 @@ def employeeCreateView(request):
                   }
                   )
     
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
 def employeeUpdateView(request, pk):
     employee = Employee.objects.get(pk=pk)
     admins = User.objects.all()
@@ -151,18 +159,19 @@ def employeeUpdateView(request, pk):
                    'reg_date':employee.reg_date.isoformat()
                    })
 
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
 def employeeDeleteView(request, pk):
     employee = Employee.objects.get(pk=pk)
     employee.delete()
     return HttpResponseRedirect(reverse('dashboard:employees-list'))
 
 #Farmer
-class FarmerListView(LoginRequiredMixin,ListView):
-    template_name = 'dashboard/farmers/list.html'
-    model = Farmer
+@login_required(login_url= '/dashboard/accounts/login')
+def farmerListView(request):
+    farmers = Farmer.objects.all()
+    return render(request,"dashboard/farmers/list.html",{'farmers': farmers}) 
 
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
 def farmerCreateView(request):
     n=''
     if request.method == "POST":
@@ -226,7 +235,7 @@ def farmerCreateView(request):
                   }
                   )
     
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
 def farmerUpdateView(request, pk):
     farmer = Farmer.objects.get(pk=pk)
     admins = User.objects.all()
@@ -244,7 +253,7 @@ def farmerUpdateView(request, pk):
                    'admins':admins
                    })
 
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
 def farmerDeleteView(request, pk):
     farmer = Farmer.objects.get(pk=pk)
     farmer.delete()
@@ -297,9 +306,11 @@ def farmerDeleteView(request, pk):
 #     return HttpResponseRedirect(reverse('dashboard:fatrates-list'))
 
 #Milk
-class MilkListView(LoginRequiredMixin,ListView):
-    template_name = 'dashboard/milk/list.html'
-    model = Milk
+@login_required(login_url= '/dashboard/accounts/login')
+def milkListView(request):
+    milks = Milk.objects.all()
+    return render(request, 'dashboard/milk/list.html',{'milks':milks})
+  
 
 
 
@@ -414,7 +425,7 @@ class MilkListView(LoginRequiredMixin,ListView):
 #                   }
 #                   )
     
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
 def milkUpdateView(request, pk):
     milk = Milk.objects.get(pk=pk)
     employees = Employee.objects.all()
@@ -437,18 +448,19 @@ def milkUpdateView(request, pk):
                    'farmers': farmers,
                    })
 
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
 def milkDeleteView(request, pk):
     milk = Milk.objects.get(pk=pk)
     milk.delete()
     return HttpResponseRedirect(reverse('dashboard:milk-list'))
 
 #commission
-class CommissionListView(LoginRequiredMixin,ListView):
-    template_name = 'dashboard/commissions/list.html'
-    model = Commission
-
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
+def commissionListView(request):
+    commissions = Commission.objects.all()
+    return render(request,'dashboard/commissions/list.html', {'commissions':commissions})
+    
+@login_required(login_url= '/dashboard/accounts/login')
 def commissionCreateView(request):
     n=''
     if request.method == "POST":
@@ -468,7 +480,7 @@ def commissionCreateView(request):
                   }
                   )
     
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
 def commissionUpdateView(request, pk):
     commissions = Commission.objects.get(pk=pk)
     employees = Employee.objects.all()
@@ -486,18 +498,20 @@ def commissionUpdateView(request, pk):
                    'admins':admins,
                    })
 
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
 def commissionDeleteView(request, pk):
     commission = Commission.objects.get(pk=pk)
     commission.delete()
     return HttpResponseRedirect(reverse('dashboard:commissions-list'))
 
 #Payment
-class PaymentListView(LoginRequiredMixin,ListView):
-    template_name = 'dashboard/payments/list.html'
-    model = Payment
-
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
+def paymentListView(request):
+    payments = Payment.objects.all()
+    return render(request,'dashboard/payments/list.html',
+                  {'payments':payments})
+    
+@login_required(login_url= '/dashboard/accounts/login')
 def paymentCreateView(request):
     n=''
     if request.method == "POST":
@@ -518,7 +532,7 @@ def paymentCreateView(request):
                   )
 
 
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
 def paymentUpdateView(request, pk):
     payments = Payment.objects.get(pk=pk)
     farmers = Farmer.objects.all()
@@ -536,7 +550,7 @@ def paymentUpdateView(request, pk):
                    'admins':admins,
                    })
 
-@login_required
+@login_required(login_url= '/dashboard/accounts/login')
 def paymentDeleteView(request, pk):
     payment = Payment.objects.get(pk=pk)
     payment.delete()

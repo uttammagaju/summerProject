@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
@@ -6,13 +6,13 @@ from dashboard.models import *
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
-
-# @login_required(login_url= '/employees/accounts/employeelogin')
+@login_required(login_url= '/employees/accounts/employeelogin')   
 def employeeHomeView(request):
     # if not request.user.is_authenticated:
     #     return redirect(reverse('accounts:employee-login'))
     return render(request, "employees/index.html")
 
+#milk
 def milkListView(request):
     milks = Milk.objects.all()
     return render(request, "employees/milk/list.html", {'milks':milks})
@@ -68,8 +68,11 @@ def milkCreateView(request):
         else:
             try: 
                 milk_date = date.fromisoformat(date_str)
+                min_allowed_date = date.today() - timedelta(days=2)
                 if milk_date > date.today():
                     errors['date'] = 'Selected date cannot be in future.' 
+                elif milk_date < min_allowed_date:
+                    errors['date'] = 'entry date cannot be more than 2 day old.'
             except ValueError:
                 errors['date'] = 'Invalid date format.'
 
@@ -130,3 +133,8 @@ def milkCreateView(request):
                     'farmers'  : Farmer.objects.all()
                   }
                   )
+    
+#commission
+def commissionDue(request):
+    commissions = Commission.objects.all()
+    return render(request, 'employees/commission/due.html',{'commissions':commissions})
