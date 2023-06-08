@@ -33,7 +33,7 @@
                 <label for="">Farmer Id</label>
                 <select class="form-control"  name="farmer_id" >
                     {% for farmer in farmers %}
-                    {% if farmer.id == payment.farmer_id %}
+                    {% if farmer.id == payment.farmer_id_id %}
                     <option value="{{ farmer.id }}" selected>{{ farmer.farmer_name }}</option>
                     {% else %}
                     <option value="{{ farmer.id }}">{{ farmer.farmer_name }}</option>

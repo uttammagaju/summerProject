@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0024_alter_milk_fat_alter_milk_qty_alter_milk_rate'),
+        ("dashboard", "0024_alter_milk_fat_alter_milk_qty_alter_milk_rate"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='milk',
-            name='rate',
+            model_name="milk",
+            name="rate",
             field=models.FloatField(max_length=255, null=True),
         ),
     ]

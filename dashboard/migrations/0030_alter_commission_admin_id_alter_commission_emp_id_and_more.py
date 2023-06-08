@@ -6,46 +6,83 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('dashboard', '0029_alter_employee_admin_id'),
+        ("dashboard", "0029_alter_employee_admin_id"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='commission',
-            name='admin_id',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='commission', to=settings.AUTH_USER_MODEL),
+            model_name="commission",
+            name="admin_id",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="commission",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='commission',
-            name='emp_id',
-            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.PROTECT, related_name='commission', to='dashboard.employee'),
+            model_name="commission",
+            name="emp_id",
+            field=models.ForeignKey(
+                blank=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="commission",
+                to="dashboard.employee",
+            ),
         ),
         migrations.AlterField(
-            model_name='farmer',
-            name='admin_id',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='farmer', to=settings.AUTH_USER_MODEL),
+            model_name="farmer",
+            name="admin_id",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="farmer",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='milk',
-            name='emp_id',
-            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.PROTECT, related_name='milk', to='dashboard.employee'),
+            model_name="milk",
+            name="emp_id",
+            field=models.ForeignKey(
+                blank=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="milk",
+                to="dashboard.employee",
+            ),
         ),
         migrations.AlterField(
-            model_name='milk',
-            name='farmer_id',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='milk', to='dashboard.farmer'),
+            model_name="milk",
+            name="farmer_id",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="milk",
+                to="dashboard.farmer",
+            ),
         ),
         migrations.AlterField(
-            model_name='payment',
-            name='admin_id',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='payment', to=settings.AUTH_USER_MODEL),
+            model_name="payment",
+            name="admin_id",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="payment",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='payment',
-            name='farmer_id',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='payment', to='dashboard.farmer'),
+            model_name="payment",
+            name="farmer_id",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="payment",
+                to="dashboard.farmer",
+            ),
         ),
     ]

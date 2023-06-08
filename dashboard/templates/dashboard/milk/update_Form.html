@@ -21,38 +21,25 @@
                 <label >Date</label>
                 <input type="date" class="form-control"  name="date" value="{{ milk.date|date:'Y-m-d' }}">
             </div>
-            <div class="form-group mt-3">
-                <label > Added By</label>
-                <select class="form-control"  name="emp_id" >
+            <div class="form-group mt-3 ">
+                <label hidden > Added By</label>
+                <select class="form-control"  name="emp_id" hidden>
                     {% for employee in employees %}
-                        {% if employee.id != milk.emp_id %}
-                            <option value="{{ employee.id }}" selected>{{ employee.emp_name }}</option>
-                        {% else %}
-                            <option value="{{ employee.id }}">{{ employee.empname }}</option>
+                        {% if employee.id == milk.emp_id_id %}
+                            <option value="{{ employee.id }}" selected >{{ employee.emp_name }}</option>
+                       
                         {% endif %}
                     {% endfor %}
                 </select>
 
             </div>
-            <!-- <div class="form-group mt-3">
-                <label >Rate</label>
-                <select class="form-control"  name="fatrate_id">
-                    {% for fatrate in fatrates %}
-                        {% if fatrate.id == milk.fatrate_id %}
-                            <option value="{{ fatrate.id }}" selected>{{ fatrate.rate }}</option>
-                        {% else %}
-                            <option value="{{ fatrate.id }}">{{ fatrate.rate }}</option>
-                        {% endif %}
-                    {% endfor %}
-                </select>
-
-            </div> -->
-            <div class="form-group mt-3">
+            
+            <div class="form-group mt-3 ">
                 <label for="">Farmer Id</label>
                 <select class="form-control"  name="farmer_id" >
                     {% for farmer in farmers %}
-                    {% if farmer.id == milk.farmer_id %}
-                    <option value="{{ farmer.id }}" selected>{{ farmer.farmer_name }}</option>
+                    {% if farmer.id == milk.farmer_id_id %}
+                    <option value="{{ farmer.id }}" selected >{{ farmer.farmer_name }} </option>
                     {% else %}
                     <option value="{{ farmer.id }}">{{ farmer.farmer_name }}</option>
                     {% endif %}

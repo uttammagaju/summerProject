@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_crontab',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     "dashboard",
     "employees",
     "farmers",
+    "user",
+    'django_extensions',
 ]
 
 MIDDLEWARE = [
@@ -55,13 +58,13 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# # AUTHENTICATION_BACKENDS
+# AUTHENTICATION_BACKENDS
 
 # AUTHENTICATION_BACKENDS = [
-#     'django.contrib.auth.backends.ModelBackend',  # Django's default authentication backend
-#     'employees.backends.EmployeeBackend',  # Custom authentication backend for Employee model
+#     'employee.authentication.EmployeeFarmerBackend',
+#     'django.contrib.auth.backends.ModelBackend',
 
-#     ]   
+#     ]
 
 ROOT_URLCONF = "DMS.urls"
 
@@ -116,8 +119,6 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # LOGIN_URL =  "/dashboard/accounts/login"
 # "/employees/accounts/employeelogin"
-    
-    
 
 
 # Internationalization
@@ -141,3 +142,13 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+AUTH_USER_MODEL = "user.User"
+
+CRON_CLASSES = [
+    'dashboard.cron.update_employee_salaries',
+]
+CRONJOBS = [
+    ('0 0 * * *', 'dashboard.cron.update_employee_salaries'),    # Daily at midnight
+    # Add more schedule definitions for other intervals
+]

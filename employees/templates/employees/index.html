@@ -3,43 +3,89 @@
 {% block main %}
 
 
-<p>Welcome {{ request.session.employee_name }} </p>
-<div class="container">
-    <div class="row">
-      <div class="col-md-6 offset-md-3">
-        <div class="card">
-          <div class="card-header">
-            <h2>Employee Milk Collection Dashboard</h2>
+<div class="card border-left-primary align-items-center">
+  <p class="message">
+    <span class="message-text">{{ message }}</span>
+    <span class="username">{{ request.session.employee_name }}</span>
+  </p>
+</div>
+
+<div class="row">
+  <div class="col-xl-8 col-lg-5">
+    <div class="card">
+      <div class="card-header">
+        <h2>Today Payment Milk Collection Dashboard</h2>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Total Payment Collected </h3>
+            <div class="circle-value employees">
+              <span id="total_amount">0</span>
+            </div>
           </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-6">
-                <h3>Total Employees</h3>
-                <div class="circle-value employees">
-                  <span id="totalEmployees">0</span>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <h3>Total Milk Collected</h3>
-                <div class="circle-value milk">
-                  <span id="totalMilk">0</span> liters
-                </div>
-              </div>
+          <div class="col-md-6">
+            <h3>Total Milk Collected</h3>
+            <div class="circle-value milk">
+              <span id="total_milk_collected">0</span> liters
             </div>
-            <div id="chart"></div>
-            <div class="chart-labels">
-              <div class="label">
-                <div class="color-box" style="background-color: #007bff;"></div>
-                Employees
-              </div>
-              <div class="label">
-                <div class="color-box" style="background-color: #28a745;"></div>
-                Milk (liters)
-              </div>
-            </div>
+          </div>
+        </div>
+        <div id="chart"></div>
+        <div class="chart-labels">
+          <div class="label">
+            <div class="color-box" style="background-color: #007bff;"></div>
+            Payment
+          </div>
+          <div class="label">
+            <div class="color-box" style="background-color: #28a745;"></div>
+            Milk (liters)
           </div>
         </div>
       </div>
     </div>
   </div>
+  <div id="totalMilkCollected" hidden>{{ total_milk_collected|default:0 }}</div>
+<div id="totalAmount" hidden>{{ total_amount|default:0 }}</div>
+</div>
+
+<script>
+  // Assuming you have JavaScript code to fetch the data and update the values
+
+  // Example code to simulate fetching the data
+  // Replace this with your actual code to fetch the data from a database or API
+  setTimeout(() => {
+    const total_milk_collected  =  parseInt(document.getElementById('totalMilkCollected').textContent);
+    const total_amount = parseInt(document.getElementById('totalAmount').textContent);
+
+    // Update the values in the dashboard
+    document.getElementById('total_milk_collected').innerText = total_milk_collected;
+    document.getElementById('total_amount').innerText = total_amount;
+
+    // Create the chart
+    const options = {
+      chart: {
+        type: 'bar',
+        height: 350
+      },
+      series: [
+        
+        {
+          name: 'Milk (liters)',
+          data: [total_amount]
+        },
+        {
+          name: 'Payment',
+          data: [total_milk_collected]
+        }
+      ],
+      xaxis: {
+        categories: ['']
+      }
+    };
+
+    const chart = new ApexCharts(document.getElementById('chart'), options);
+    chart.render();
+  }, 2000);
+</script>
 {% endblock main %}

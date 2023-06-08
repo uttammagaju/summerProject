@@ -5,45 +5,49 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0005_alter_employee_emp_email'),
+        ("dashboard", "0005_alter_employee_emp_email"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='employee',
-            name='admin_id',
-            field=models.ForeignKey(blank=True, on_delete=django.db.models.deletion.CASCADE, related_name='employee', to='dashboard.admin'),
+            model_name="employee",
+            name="admin_id",
+            field=models.ForeignKey(
+                blank=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="employee",
+                to="dashboard.admin",
+            ),
         ),
         migrations.AlterField(
-            model_name='employee',
-            name='commission_amt',
+            model_name="employee",
+            name="commission_amt",
             field=models.PositiveIntegerField(blank=True),
         ),
         migrations.AlterField(
-            model_name='employee',
-            name='emp_contact',
+            model_name="employee",
+            name="emp_contact",
             field=models.PositiveBigIntegerField(blank=True),
         ),
         migrations.AlterField(
-            model_name='employee',
-            name='emp_name',
+            model_name="employee",
+            name="emp_name",
             field=models.CharField(blank=True, max_length=50),
         ),
         migrations.AlterField(
-            model_name='employee',
-            name='emp_pwd',
+            model_name="employee",
+            name="emp_pwd",
             field=models.CharField(blank=True, max_length=255),
         ),
         migrations.AlterField(
-            model_name='employee',
-            name='reg_date',
+            model_name="employee",
+            name="reg_date",
             field=models.DateField(blank=True),
         ),
         migrations.AlterField(
-            model_name='employee',
-            name='salary',
+            model_name="employee",
+            name="salary",
             field=models.PositiveIntegerField(blank=True),
         ),
     ]

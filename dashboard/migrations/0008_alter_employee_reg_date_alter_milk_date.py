@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0007_remove_employee_commission_amt'),
+        ("dashboard", "0007_remove_employee_commission_amt"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='employee',
-            name='reg_date',
+            model_name="employee",
+            name="reg_date",
             field=models.DateField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='milk',
-            name='date',
+            model_name="milk",
+            name="date",
             field=models.DateField(blank=True, null=True),
         ),
     ]

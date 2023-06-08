@@ -11,43 +11,52 @@
             {% csrf_token %}
             <div class="form-row">
                 <div class="form-group mt-3 ">
-                    <input type="email" class="form-control" id="inputEmail4" name="emp_email" placeholder="Email" value="{{ employee.emp_email }}">
+                    <input type="email" class="form-control" id="inputEmail4" name="emp_email" placeholder="Email" value="{{ employee.emp_email }}{{ emp_email }}">
+                    {% if errors.emp_email %}
+                    <p class="error">{{ errors.emp_email }}</p>
+                    {% endif %}
                 </div>
                 <div class="form-group  mt-3">
                     <input type="text" class="form-control" id="inputPassword4" name="emp_pwd"
-                        placeholder="Password" value="{{ employee.emp_pwd }}">
+                        placeholder="Password" value="{{ employee.emp_pwd }}{{ emp_pwd }}">
+                        {% if errors.emp_pwd %}
+                        <p class="error">{{ errors.emp_pwd }}</p>
+                        {% endif %}
                 </div>
             </div>
             <div class="form-group mt-3">
-                <input type="text" class="form-control" id="inputAddress" name="emp_name" placeholder="Employee Name" value="{{ employee.emp_name }}">
+                <input type="text" class="form-control" id="inputAddress" name="emp_name" placeholder="Employee Name" value="{{ employee.emp_name }}{{ emp_name}}">
+                {% if errors.emp_name %}
+                <p class="error">{{ errors.emp_name }}</p>
+                {% endif %}
             </div>
             <div class="form-group mt-3">
-                <input type="text" class="form-control" id="inputAddress2" name="emp_contact" placeholder="Contact" value="{{ employee.emp_contact }}">
-            </div>
-            <div class="form-group mt-3">
-                <input type="text" class="form-control" id="inputAddress2" name="salary" placeholder="Salary" value="{{ employee.salary }}">
+                <input type="text" class="form-control" id="inputAddress2" name="emp_contact" placeholder="Contact" value="{{ employee.emp_contact }} {{ emp_contact }}">
+                {% if errors.emp_name %}
+                <p class="error">{{ errors.emp_name }}</p>
+                {% endif %}
             </div>
             <div class="form-group mt-3">              
                 <input type="date" class="form-control" id="inputAddress2" name="reg_date" placeholder="Register Date" value="{{ employee.reg_date|date:'Y-m-d'}}">
+            
             </div>
-            <div class="form-group mt-3">
+            <!-- <div class="form-group mt-3">
                 <select class="form-control" id="inputAddress2" name="admin_id" placeholder="Admin Id" >
                     
                     {% for admin in admins %}
-                    <P>{{ admin.id }} {{ employee.admin_id }} </P>
-                        {% if admin.id == employee.admin_id %}
+                    <P>{{ admin.id }} {{ employee.admin_id_id }} </P>
+                        {% if admin.id == employee.admin_id_id %}
 
                             <option value="{{ admin.id }}" selected>{{ admin.username }}</option>
                         {% else %}
                             <option value="{{ admin.id }}">
-                                <!-- {{ admin.username }}   -->
-                                {{ admin.username }} {{ employee.admin_id }} 
+                                {{ admin.username }}  
                             </option>
                         {% endif %}
                     {% endfor %}
                 </select>
                 
-            </div>
+            </div> -->
             
     </div>
     <button type="submit" class="btn btn-primary">update</button>

@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0002_alter_employee_commission_amt_and_more'),
+        ("dashboard", "0002_alter_employee_commission_amt_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='employee',
-            name='emp_email',
-            field=models.CharField(error_messages={'required': 'Please enter your email'}, max_length=50),
+            model_name="employee",
+            name="emp_email",
+            field=models.CharField(
+                error_messages={"required": "Please enter your email"}, max_length=50
+            ),
         ),
     ]

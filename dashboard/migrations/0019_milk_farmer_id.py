@@ -5,15 +5,20 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0018_alter_commission_commission_pay_date'),
+        ("dashboard", "0018_alter_commission_commission_pay_date"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='milk',
-            name='farmer_id',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='milk', to='dashboard.farmer'),
+            model_name="milk",
+            name="farmer_id",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="milk",
+                to="dashboard.farmer",
+            ),
         ),
     ]

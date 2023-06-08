@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0010_alter_payment_options_remove_milk_rate_and_more'),
+        ("dashboard", "0010_alter_payment_options_remove_milk_rate_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='milk',
-            name='fat_rate',
+            model_name="milk",
+            name="fat_rate",
             field=models.PositiveIntegerField(null=True),
         ),
     ]

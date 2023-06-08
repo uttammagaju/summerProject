@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0013_fatrate_type_of_milk'),
+        ("dashboard", "0013_fatrate_type_of_milk"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='fatrate',
-            name='rate',
+            model_name="fatrate",
+            name="rate",
             field=models.PositiveBigIntegerField(),
         ),
     ]

@@ -15,19 +15,17 @@
                                         <th>SN</th>
                                         <th>Amount</th>
                                         <th>Pay Date</th>
-                                        <th>Admin</th>
                                         <th>Farmer</th>
                                     </tr>
                                 </thead>
                                 
                                 <tbody>
-                                    {% for object in object_list %}
+                                    {% for payment in payments %}
                                     <tr>
                                         <td>{{ forloop.counter }}</td>
-                                        <td>{{ object.amt }}</td>
-                                        <td>{{ object.payment_date }}</td>
-                                        <td>{{ object.admin_id }}</td>
-                                        <td>{{ object.farmer_id }}</td>
+                                        <td>{{ payment.amt }}</td>
+                                        <td>{{ payment.payment_date }}</td>
+                                        <td>{{ payment.farmer_id }}</td>
                                     </tr>
                                     {% endfor %}
                                     

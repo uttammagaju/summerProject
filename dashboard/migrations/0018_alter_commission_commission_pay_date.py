@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0017_rename_commission_amt_commission_commission_amt'),
+        ("dashboard", "0017_rename_commission_amt_commission_commission_amt"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='commission',
-            name='commission_pay_date',
+            model_name="commission",
+            name="commission_pay_date",
             field=models.DateField(),
         ),
     ]

@@ -4,19 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0011_milk_fat_rate'),
+        ("dashboard", "0011_milk_fat_rate"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='milk',
-            name='milk_type',
+            model_name="milk",
+            name="milk_type",
         ),
         migrations.AlterField(
-            model_name='employee',
-            name='emp_email',
+            model_name="employee",
+            name="emp_email",
             field=models.CharField(blank=True, max_length=50, null=True),
         ),
     ]

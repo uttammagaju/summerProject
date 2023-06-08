@@ -4,30 +4,29 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0001_initial'),
+        ("dashboard", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='employee',
-            name='commission_amt',
+            model_name="employee",
+            name="commission_amt",
             field=models.PositiveIntegerField(),
         ),
         migrations.AlterField(
-            model_name='employee',
-            name='emp_contact',
+            model_name="employee",
+            name="emp_contact",
             field=models.PositiveBigIntegerField(),
         ),
         migrations.AlterField(
-            model_name='employee',
-            name='salary',
+            model_name="employee",
+            name="salary",
             field=models.PositiveIntegerField(),
         ),
         migrations.AlterField(
-            model_name='farmer',
-            name='farmer_contact',
+            model_name="farmer",
+            name="farmer_contact",
             field=models.PositiveBigIntegerField(),
         ),
     ]

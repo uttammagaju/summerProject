@@ -5,87 +5,146 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Admin',
+            name="Admin",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('full_name', models.CharField(max_length=50)),
-                ('username', models.CharField(max_length=50)),
-                ('email', models.CharField(max_length=50)),
-                ('admin_pwd', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("full_name", models.CharField(max_length=50)),
+                ("username", models.CharField(max_length=50)),
+                ("email", models.CharField(max_length=50)),
+                ("admin_pwd", models.CharField(max_length=50)),
             ],
             options={
-                'verbose_name': 'Admin',
-                'verbose_name_plural': 'Admins',
-                'ordering': ('id',),
+                "verbose_name": "Admin",
+                "verbose_name_plural": "Admins",
+                "ordering": ("id",),
             },
         ),
         migrations.CreateModel(
-            name='Employee',
+            name="Employee",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('emp_email', models.CharField(max_length=50)),
-                ('emp_pwd', models.CharField(max_length=255)),
-                ('emp_name', models.CharField(max_length=50)),
-                ('emp_contact', models.PositiveBigIntegerField(max_length=10)),
-                ('salary', models.PositiveIntegerField(max_length=20)),
-                ('reg_date', models.DateField()),
-                ('commission_amt', models.PositiveIntegerField(max_length=50)),
-                ('admin_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='employee', to='dashboard.admin')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("emp_email", models.CharField(max_length=50)),
+                ("emp_pwd", models.CharField(max_length=255)),
+                ("emp_name", models.CharField(max_length=50)),
+                ("emp_contact", models.PositiveBigIntegerField(max_length=10)),
+                ("salary", models.PositiveIntegerField(max_length=20)),
+                ("reg_date", models.DateField()),
+                ("commission_amt", models.PositiveIntegerField(max_length=50)),
+                (
+                    "admin_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="employee",
+                        to="dashboard.admin",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Employee',
-                'verbose_name_plural': 'Employees',
-                'ordering': ('id',),
+                "verbose_name": "Employee",
+                "verbose_name_plural": "Employees",
+                "ordering": ("id",),
             },
         ),
         migrations.CreateModel(
-            name='Payment',
+            name="Payment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('payment_date', models.DateField()),
-                ('amt', models.PositiveIntegerField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("payment_date", models.DateField()),
+                ("amt", models.PositiveIntegerField()),
             ],
         ),
         migrations.CreateModel(
-            name='Milk',
+            name="Milk",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('milk_type', models.CharField(max_length=50)),
-                ('fat', models.PositiveIntegerField()),
-                ('rate', models.PositiveIntegerField()),
-                ('qty', models.PositiveIntegerField()),
-                ('date', models.DateField()),
-                ('emp_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='employee', to='dashboard.employee')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("milk_type", models.CharField(max_length=50)),
+                ("fat", models.PositiveIntegerField()),
+                ("rate", models.PositiveIntegerField()),
+                ("qty", models.PositiveIntegerField()),
+                ("date", models.DateField()),
+                (
+                    "emp_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="employee",
+                        to="dashboard.employee",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Milk',
-                'verbose_name_plural': 'Milk',
-                'ordering': ('id',),
+                "verbose_name": "Milk",
+                "verbose_name_plural": "Milk",
+                "ordering": ("id",),
             },
         ),
         migrations.CreateModel(
-            name='Farmer',
+            name="Farmer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('farmer_name', models.CharField(max_length=50)),
-                ('farmer_pwd', models.CharField(max_length=50)),
-                ('farmer_email', models.CharField(max_length=50)),
-                ('farmer_address', models.CharField(max_length=100)),
-                ('farmer_contact', models.PositiveBigIntegerField(max_length=10)),
-                ('admin_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='admin', to='dashboard.admin')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("farmer_name", models.CharField(max_length=50)),
+                ("farmer_pwd", models.CharField(max_length=50)),
+                ("farmer_email", models.CharField(max_length=50)),
+                ("farmer_address", models.CharField(max_length=100)),
+                ("farmer_contact", models.PositiveBigIntegerField(max_length=10)),
+                (
+                    "admin_id",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="admin",
+                        to="dashboard.admin",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Farmer',
-                'verbose_name_plural': 'Farmers',
-                'ordering': ('id',),
+                "verbose_name": "Farmer",
+                "verbose_name_plural": "Farmers",
+                "ordering": ("id",),
             },
         ),
     ]

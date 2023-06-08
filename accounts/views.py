@@ -1,10 +1,11 @@
-from django.shortcuts import render
+from datetime import date
 from django.views.generic import FormView
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render, HttpResponse
 from django.urls import reverse_lazy
-from dashboard.models import *
+from user.models import *
 from .forms import LoginForm
+from django.contrib.auth.views import LoginView
 
 
 # Create your views here.
@@ -13,10 +14,32 @@ class LoginViews(FormView):
     form_class = LoginForm
 
     def form_valid(self, form):
-        login(self.request, form.instance)
-        self.request.session["admin_id"] = form.instance.id
-        self.request.session["username"] = form.instance.username
-        return redirect(reverse_lazy("dashboard:home"))
+        role = form.instance.role
+        print(role)
+        if (
+            form.instance.role == User.Role.EMPLOYEE
+            or form.instance.role == User.Role.FARMER
+        ):
+            login(self.request, form.instance)
+            return HttpResponse(" You are not a Admin")
+        if form.instance.role == User.Role.ADMIN and form.instance.is_active:
+            login(self.request, form.instance)
+            self.request.session["admin_id"] = form.instance.id
+            self.request.session["username"] = form.instance.username
+            employees = EmployeeProfile.objects.all()
+
+            for employee in employees:
+                today = date.today()
+                years_worked = today.year -employee.reg_date.year
+
+                if years_worked >= 2:
+                    employee.salary *= 1.1 #increase salary by 10%
+                if years_worked >= 4:
+                    employee.salary *= 1.15 #increase salary by 15%
+                
+                employee.save()
+                
+            return redirect(reverse_lazy("dashboard:home"))
 
 
 class LogoutViews(FormView):
@@ -25,38 +48,27 @@ class LogoutViews(FormView):
         return redirect(reverse_lazy("accounts:login"))
 
 
-# employee
-def employeeLogin(request):
-    if request.method == "POST":
-        emp_email = request.POST["email"]
-        emp_pwd = request.POST["password"]
-        employee = Employee.authenticate_employee(emp_email, emp_pwd)
+class EmployeeLoginViews(FormView):
+    template_name = "accounts/login.html"
+    form_class = LoginForm
 
-        if employee is not None:
-            print(employee.emp_email)
-            request.session["employee_id"] = employee.id
-            request.session["employee_name"] = employee.emp_name
-            return redirect(reverse_lazy("employees:home"))
-        elif employee is None:
+    def form_valid(self, form):
+        if (
+            form.instance.role == User.Role.ADMIN
+            or form.instance.role == User.Role.FARMER
+        ):
+            login(self.request, form.instance)
             return HttpResponse(" You are not a employee")
-        else:
-            return render(request, "accounts/login.html")
-    return render(request, "accounts/login.html")
 
-def employeeLogout(request):
-    logout(request)
-    return redirect(reverse_lazy('accounts:employee-login'))
+        elif form.instance.role == User.Role.EMPLOYEE and form.instance.is_active:
+            login(self.request, form.instance)
+            employee = EmployeeProfile.objects.get(user_id=form.instance.id)
+            self.request.session["employee_id"] = employee.id
+            self.request.session["employee_name"] = employee.emp_name
+            return redirect(reverse_lazy("employees:home"))
 
-# #farmer
-# def farmerLogin(request):
-#     if request.method == 'POST':
-#         farmer_email =request.POST['email']
-#         farmer_pwd = request.POST['password']
-#         farmer = Farmer.authenticate_farmer(farmer_email, farmer_pwd)
 
-#         if farmer is not None:
-#             return redirect(reverse_lazy('dashboard:payments-create'))
-        
-#         else: 
-#             return render(request, 'accounts/login.html')
-#     return render(request, 'accounts/login.html')
+class EmployeeLogoutViews(FormView):
+    def get(self, request, *args, **kwargs):
+        logout(self.request)
+        return redirect(reverse_lazy("accounts:employee-login"))

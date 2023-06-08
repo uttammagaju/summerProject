@@ -4,20 +4,19 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('dashboard', '0022_milk_rate'),
+        ("dashboard", "0022_milk_rate"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='milk',
-            name='fat',
+            model_name="milk",
+            name="fat",
             field=models.DecimalField(decimal_places=2, max_digits=5),
         ),
         migrations.AlterField(
-            model_name='milk',
-            name='qty',
+            model_name="milk",
+            name="qty",
             field=models.DecimalField(decimal_places=2, max_digits=5),
         ),
     ]

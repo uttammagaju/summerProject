@@ -6,26 +6,45 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('dashboard', '0030_alter_commission_admin_id_alter_commission_emp_id_and_more'),
+        (
+            "dashboard",
+            "0030_alter_commission_admin_id_alter_commission_emp_id_and_more",
+        ),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='payment',
-            name='emp_id',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='payment', to='dashboard.employee'),
+            model_name="payment",
+            name="emp_id",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="payment",
+                to="dashboard.employee",
+            ),
         ),
         migrations.AlterField(
-            model_name='commission',
-            name='admin_id',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='commission', to=settings.AUTH_USER_MODEL),
+            model_name="commission",
+            name="admin_id",
+            field=models.ForeignKey(
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="commission",
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AlterField(
-            model_name='commission',
-            name='emp_id',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.PROTECT, related_name='commission', to='dashboard.employee'),
+            model_name="commission",
+            name="emp_id",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.PROTECT,
+                related_name="commission",
+                to="dashboard.employee",
+            ),
         ),
     ]
