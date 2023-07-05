@@ -4,7 +4,7 @@
 
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary">Employee</h6>
+        <h6 class="m-0 font-weight-bold text-primary">Commission</h6>
     </div>
     <div class="card-body">
         <form method="post" action="" enctype="multipart/form-data">
@@ -33,7 +33,7 @@
                 <label for="">Employee Id</label>
                 <select class="form-control"  name="emp_id" >
                     {% for employee in employees %}
-                    {% if employee.id == commission.emp_id %}
+                    {% if employee.id == commission.emp_id_id %}
                     <option value="{{ employee.id }}" selected>{{ employee.emp_name }}</option>
                     {% else %}
                     <option value="{{ employee.id }}">{{ employee.emp_name }}</option>

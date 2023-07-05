@@ -16,7 +16,9 @@
   <!-- Custom styles for this template -->
   <link href="/static/dashboard/css/dashboard.css" rel="stylesheet">
   <style>
-     
+    .nav-item.dropdown:hover .dropdown-menu {
+      display: block;
+    }
     .message {
       font-size: 18px;
       font-weight: bold;
@@ -92,18 +94,27 @@
                 Milk
               </a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'dashboard:commissions-list' %}">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="commissionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <span data-feather="layers" class="align-text-bottom"></span>
                 Commission
               </a>
+              <ul class="dropdown-menu" aria-labelledby="commissionDropdown">
+                <li><a class="dropdown-item" href="{% url 'dashboard:commissions-paid' %}">Paid</a></li>
+                <li><a class="dropdown-item" href="{% url 'dashboard:commissions-unpaid' %}">Unpaid</a></li>
+              </ul>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'dashboard:payments-list' %}">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="paymentDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <span data-feather="layers" class="align-text-bottom"></span>
                 Payment
               </a>
+              <ul class="dropdown-menu" aria-labelledby="paymentDropdown">
+                <li><a class="dropdown-item" href="{% url 'dashboard:payments-paid' %}">Paid</a></li>
+                <li><a class="dropdown-item" href="{% url 'dashboard:payments-unpaid' %}">Unpaid</a></li>
+              </ul>
             </li>
+            
           </ul>
 
 
@@ -172,6 +183,10 @@
     <script>
       $('body').on('click', '.delete-link', function (e) {
         if (!confirm("are you sure You want to delete? "))
+          e.preventDefault();
+      });
+      $('body').on('click', '.pay-link', function (e) {
+        if (!confirm("are you sure You want to pay? "))
           e.preventDefault();
       });
     </script>

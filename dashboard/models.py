@@ -8,6 +8,7 @@ from user.models import *
 class Commission(models.Model):
     commission_amt = models.PositiveIntegerField(null=True)
     commission_pay_date = models.DateField()
+    status = models.CharField(max_length=10, choices=[('unpaid', 'Unpaid'), ('paid', 'Paid')], default='unpaid')
     admin_id = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="commission", null=True
     )
@@ -66,6 +67,7 @@ class Milk(models.Model):
 class Payment(models.Model):
     amt = models.PositiveIntegerField()
     payment_date = models.DateField()
+    status = models.CharField(max_length=10, choices=[('unpaid', 'Unpaid'), ('paid', 'Paid')], default='unpaid')
     emp_id = models.ForeignKey(
         EmployeeProfile,
         on_delete=models.CASCADE,

@@ -74,7 +74,11 @@
     <!-- Custom scripts for all pages-->
     <script src="/static/account/js/sb-admin-2.min.js"></script>
     <script src="static/account/js/login.js"></script>
-
+    {% if message %}
+    <script>
+        alert("{{ message }}");
+    </script>
+{% endif %}
 </body>
 
 </html>

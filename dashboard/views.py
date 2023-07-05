@@ -391,14 +391,14 @@ def farmerCreateView(request):
 def farmerUpdateView(request, pk):
     farmer = get_object_or_404(FarmerProfile, pk=pk)
     user = farmer.user
-    admins = User.objects.all()
+    admins = User.objects.filter(is_active=True,role=User.Role.ADMIN)
     if request.method == "POST":
         farmer_name = request.POST.get("farmer_name")
         farmer_email = request.POST.get("farmer_email")
         farmer_pwd = request.POST.get("farmer_pwd")
         farmer_contact = request.POST.get("farmer_contact")
         farmer_address = request.POST.get("farmer_address")
-        admin_id = User.objects.get(pk=request.POST["admin_id"])
+        admin_id = User.objects.get(pk=request.POST["admin_id"],is_active=True,role=User.Role.ADMIN)
         # update
         farmer.farmer_email = farmer_email
         farmer.farmer_pwd = farmer_pwd
@@ -724,10 +724,17 @@ def milkDeleteView(request, pk):
 
 # commission
 @login_required(login_url="/dashboard/accounts/login")
-def commissionListView(request):
-    commissions = Commission.objects.all()
+def commissionPaidListView(request):
+    commissions = Commission.objects.filter(status='paid').order_by('-commission_pay_date')
     return render(
-        request, "dashboard/commissions/list.html", {"commissions": commissions}
+        request, "dashboard/commissions/paid.html", {"commissions": commissions}
+    )
+
+@login_required(login_url="/dashboard/accounts/login")
+def commissionUnpaidListView(request):
+    commissions = Commission.objects.filter(status='unpaid').order_by('-commission_pay_date')
+    return render(
+        request, "dashboard/commissions/unpaid.html", {"commissions": commissions}
     )
 
 
@@ -759,13 +766,13 @@ def commissionCreateView(request):
 @login_required(login_url="/dashboard/accounts/login")
 def commissionUpdateView(request, pk):
     commissions = Commission.objects.get(pk=pk)
-    employees = Employee.objects.all()
-    admins = User.objects.all()
+    employees = EmployeeProfile.objects.filter(is_active=True)
+    admins = User.objects.filter(is_active=True,role=User.Role.ADMIN)
     if request.method == "POST":
         commissions.commission_amt = request.POST.get("Commission_amt")
         commissions.commission_pay_date = request.POST.get("commission_pay_date")
-        commissions.admin_id = User.objects.get(pk=request.POST["admin_id"])
-        commissions.emp_id = Employee.objects.get(pk=request.POST["emp_id"])
+        commissions.admin_id = User.objects.get(pk=request.POST["admin_id"],is_active=True,role=User.Role.ADMIN)
+        commissions.emp_id = EmployeeProfile.objects.get(pk=request.POST["emp_id"],is_active=True)
         commissions.save()
         return redirect(reverse_lazy("dashboard:commissions-list"))
     return render(
@@ -785,13 +792,26 @@ def commissionDeleteView(request, pk):
     commission.delete()
     return HttpResponseRedirect(reverse("dashboard:commissions-list"))
 
+@login_required(login_url="/dashboard/accounts/login")
+def commissionPaid(request, pk):
+    commission = Commission.objects.get(pk=pk)
+    commission.status = 'paid'
+    commission.commission_pay_date = date.today()
+    commission.admin_id = User.objects.get(id=request.session.get("admin_id"))
+    commission.save()
+    return HttpResponseRedirect(reverse("dashboard:commissions-paid"))
+
 
 # Payment
 @login_required(login_url="/dashboard/accounts/login")
-def paymentListView(request):
-    payments = Payment.objects.all()
-    return render(request, "dashboard/payments/list.html", {"payments": payments})
+def paidListView(request):
+    payments = Payment.objects.filter(status='paid').order_by('-payment_date')
+    return render(request, "dashboard/payments/paid.html", {"payments": payments})
 
+@login_required(login_url="/dashboard/accounts/login")
+def unpaidListView(request):
+    payments = Payment.objects.filter(status='unpaid').order_by('-payment_date')
+    return render(request, "dashboard/payments/unpaid.html", {"payments": payments})
 
 @login_required(login_url="/dashboard/accounts/login")
 def paymentCreateView(request):
@@ -844,6 +864,14 @@ def paymentDeleteView(request, pk):
     payment.delete()
     return HttpResponseRedirect(reverse("dashboard:payments-list"))
 
+@login_required(login_url="/dashboard/accounts/login")
+def paymentPaid(request, pk):
+    payments = Payment.objects.get(pk=pk)
+    payments.status = 'paid'
+    payments.payment_date = date.today()
+    payments.admin_id = User.objects.get(id=request.session.get("admin_id"))
+    payments.save()
+    return redirect(reverse_lazy("dashboard:payments-paid"))
 
 def get_filter_options(request):
     grouped_milk = Milk.objects.annotate(year = ExtractYear("date")).values("year").order_by("-year").distinct()

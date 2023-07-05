@@ -1,0 +1,42 @@
+{% extends 'dashboard/base.html' %}
+
+{% block main %}
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Paid</h1>
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>SN</th>
+                                        <th>Amount</th>
+                                        <th>Pay Date</th>
+                                        <th>Admin</th>
+                                        <th>Farmer</th>
+                                        <th>Payment_Status</th>
+                                        
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    {% for payment in payments %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ payment.amt }}</td>
+                                        <td>{{ payment.payment_date }}</td>
+                                        <td>{{ payment.admin_id }}</td>
+                                        <td>{{ payment.farmer_id }}</td>
+                                        <td>{{ payment.status }}</td>
+                                        
+                                    </tr>
+                                    {% endfor %}
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+{% endblock main %}

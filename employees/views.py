@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from user.models import *
 from django.db.models.functions import ExtractYear, ExtractMonth
 from utils.charts import months, colorPrimary, get_year_dict
-from django.db.models import F, Sum
+from django.db.models import F, Sum,Q
 
 
 # Create your views here.
@@ -55,10 +55,12 @@ def milkCreateView(request):
         farmer_id = request.POST.get("farmer_id")
         emp = EmployeeProfile.objects.get(id=request.session.get("employee_id"))
         if farmer_id:
-            farmer = FarmerProfile.objects.get(id=farmer_id)
+            farmer = FarmerProfile.objects.get(id=farmer_id) or FarmerProfile.objects.get(farmer_name=farmer_id)
+       
         else:
             return HttpResponse("Please select an farmer")
 
+          
         fatrate = ""
         errors = {}
         # perform validation
@@ -112,7 +114,9 @@ def milkCreateView(request):
                     "qty": qty,
                     "date": date_str,
                     "emp_id": emp,
-                    "farmer_id": farmer,
+                    "farmer_id": farmer_id,
+                    "farmer_name":farmer
+                    
                 },
             )
 
@@ -131,6 +135,7 @@ def milkCreateView(request):
                 rate=fatrate,
                 emp_id=emp,
                 farmer_id=farmer,
+                
             )
             # calculate commission
             fill_date = date.today()
@@ -195,13 +200,24 @@ def milkCreateView(request):
 # commission
 @login_required(login_url="/dashboard/accounts/employeelogin")
 def commissionDue(request):
-    commissions = Commission.objects.filter(emp_id=request.session.get("employee_id"))
+    commissions = Commission.objects.filter(emp_id=request.session.get("employee_id"),status='unpaid')
     return render(
         request, "employees/commission/due.html", {"commissions": commissions}
     )
 
 @login_required(login_url="/dashboard/accounts/employeelogin")
+def commissionGet(request):
+    commissions = Commission.objects.filter(emp_id=request.session.get("employee_id"),status='paid')
+    return render(
+        request, "employees/commission/get.html", {"commissions": commissions}
+    )
+
+@login_required(login_url="/dashboard/accounts/employeelogin")
 def paymentDue(request):
-    payments = Payment.objects.all()
+    payments =  Payment.objects.filter(status='unpaid').order_by('-payment_date')
     return render( request, "employees/payment/due.html",{"payments": payments})
 
+@login_required(login_url="/dashboard/accounts/employeelogin")
+def paymentPaid(request):
+    payments =  Payment.objects.filter(status='paid').order_by('-payment_date')
+    return render( request, "employees/payment/paid.html",{"payments": payments})

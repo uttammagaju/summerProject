@@ -1,0 +1,49 @@
+{% extends 'employees/base.html' %}
+
+{% block main %}
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">Milk</h1>
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <div class="float-right">
+                            <a href="{% url 'employees:milk-create' %}" class = "btn btn-primary">
+                                <i class="fa fa-plus"></i>&nbsp; Add Milk
+                            </a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th>SN</th>
+                                        <th>Fat</th>
+                                        <th>Quantity in Ltr</th>
+                                        <th>Rate</th>
+                                        <th>Date</th>
+                                        <th>Fill By</th>
+                                        <th>Farmer</th>
+                                    </tr>
+                                </thead>
+                                
+                                <tbody>
+                                    {% for milk in milks %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ milk.fat }}</td>
+                                        <td>{{ milk.qty }}</td>
+                                        <td>{{ milk.rate }}</td>
+                                        <td>{{ milk.date }}</td>
+                                        <td>{{ milk.emp_id }}</td>
+                                        <td>{{ milk.farmer_id }}</td>
+                                       
+                                    </tr>
+                                    {% endfor %}
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+{% endblock main %}

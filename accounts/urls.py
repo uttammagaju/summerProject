@@ -9,4 +9,6 @@ urlpatterns = [
     path("logout", views.LogoutViews.as_view(), name="logout"),
     path("employeelogin", views.EmployeeLoginViews.as_view(), name="employee-login"),
     path("employeelogout", views.EmployeeLogoutViews.as_view(), name="employee-logout"),
+    path("farmerlogin", views.FarmerLoginViews.as_view(), name="farmer-login"),
+    path("farmerlogout", views.FarmerLogoutViews.as_view(), name="farmer-logout"),
 ]

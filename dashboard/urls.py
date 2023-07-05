@@ -31,7 +31,11 @@ urlpatterns = [
     path("milk/<int:pk>/update", views.milkUpdateView, name="milk-update"),
     path("milk/<int:pk>/delete", views.milkDeleteView, name="milk-delete"),
     # Commission
-    path("commissions", views.commissionListView, name="commissions-list"),
+    path("commissions/paid", views.commissionPaidListView, name="commissions-paid"),
+    path(
+        "commissions/unpaid", views.commissionUnpaidListView, name="commissions-unpaid"
+    ),
+    path("commissions/<int:pk>/paid", views.commissionPaid, name="commissions-paid"),
     # path('commissions/create',views.commissionCreateView, name = 'commissions-create'),
     path(
         "commissions/<int:pk>/update",
@@ -44,11 +48,14 @@ urlpatterns = [
         name="commissions-delete",
     ),
     # Payments
-    path("payments", views.paymentListView, name="payments-list"),
+    path("payments/paid", views.paidListView, name="payments-paid"),
+    path("payments/unpaid", views.unpaidListView, name="payments-unpaid"),
     path("payments/create", views.paymentCreateView, name="payments-create"),
     path("payments/<int:pk>/update", views.paymentUpdateView, name="payments-update"),
     path("payments/<int:pk>/delete", views.paymentDeleteView, name="payments-delete"),
-
-    path("chart/filter-options/", views.get_filter_options, name="chart-filter-options"),
+    path("payments/<int:pk>/paid", views.paymentPaid, name="payments-paid"),
+    path(
+        "chart/filter-options/", views.get_filter_options, name="chart-filter-options"
+    ),
     path("chart/milks/<int:year>/", views.get_milks_chart, name="chart-sales"),
 ]

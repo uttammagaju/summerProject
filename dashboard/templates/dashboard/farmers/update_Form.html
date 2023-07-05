@@ -34,7 +34,7 @@
             <div class="form-group mt-3">
                 <select class="form-control" id="inputAddress2" name="admin_id" placeholder="Admin Id">
                     {% for admin in admins %}
-                    {% if admin.id == farmer.admin_id %}
+                    {% if admin.id == farmer.admin_id_id %}
                     <option value="{{ admin.id }}" selected>{{ admin.username }}</option>
                     {% else %}
                     <option value="{{ admin.id }}">{{ admin.username }}</option>
