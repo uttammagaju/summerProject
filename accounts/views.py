@@ -29,14 +29,16 @@ class LoginViews(FormView):
             self.request.session["username"] = form.instance.username
             employees = EmployeeProfile.objects.all()
 
+            Basic_Salary = 15000
+            
             for employee in employees:
                 today = date.today()
                 years_worked = today.year - employee.reg_date.year
 
                 if years_worked >= 2:
-                    employee.salary *= 1.1  # increase salary by 10%
+                    employee.salary =Basic_Salary * 1.1  # increase salary by 10%
                 if years_worked >= 4:
-                    employee.salary *= 1.15  # increase salary by 15%
+                    employee.salary =Basic_Salary * 1.15  # increase salary by 15%
 
                 employee.save()
 
