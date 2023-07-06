@@ -1,0 +1,13 @@
+{% extends 'farmers/base.html' %}
+
+{% block main %}
+
+
+<div class="card border-left-primary align-items-center">
+  <p class="message">
+    <span class="message-text">{{ message }}</span>
+    <span class="username">{{ request.session.farmer_name }}</span>
+  </p>
+</div>
+
+{% endblock main %}

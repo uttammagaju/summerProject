@@ -10,11 +10,11 @@
   <title>Phaijoo Milk Dairy</title>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
-  <link href="/static/employees/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-  <link href="/static/employees/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/farmers/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="/static/farmers/css/bootstrap.min.css" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href="/static/employees/css/dashboard.css" rel="stylesheet">
+  <link href="/static/farmers/css/dashboard.css" rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://cdn.jsdelivr.net/npm/apexcharts@3.28.3"></script>
   <style>
@@ -150,42 +150,19 @@
         <div class="position-sticky pt-3 sidebar-sticky">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'employees:home' %}">
+              <a class="nav-link active" aria-current="page" href="{% url 'farmers:home' %}">
                 <span data-feather="home" class="align-text-bottom"></span>
                 Dashboard
               </a>
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span data-feather="users" class="align-text-bottom"></span>
-                Fat Rate
-              </a>
-            </li> -->
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'employees:milk-list' %}">
-                <span data-feather="bar-chart-2" class="align-text-bottom"></span>
-                Milk
-              </a>
-            </li>
-            <li class=" dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="commissionDropdown" role="button" data-toggle="dropdown" aria-expanded="false">
-                <span data-feather="layers" class="align-text-bottom"></span>
-                Commission
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="commissionDropdown">
-                <li><a class="dropdown-item" href="{% url 'employees:commissions-get' %}">Get</a></li>
-                <li><a class="dropdown-item" href="{% url 'employees:commissions-due' %}">Due</a></li>
-              </ul>
-            </li>
-
             <li class=" dropdown">
               <a class="nav-link dropdown-toggle"  href="#" id="dropdownMenuLink" role="button" data-toggle="dropdown" aria-expanded="false" aria-haspopup="true" >
                 <span data-feather="dollar-sign" class="align-text-bottom"></span>
                 Payment
               </a>
               <div class="dropdown-menu   shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                <a class="dropdown-item" href="{% url 'employees:payment-paid' %}">Paid</a>
-                <a class="dropdown-item" href="{% url 'employees:payment-due' %}">Due</a>
+                <a class="dropdown-item" href="{% url 'farmers:payment-paid' %}">Paid</a>
+                <a class="dropdown-item" href="{% url 'farmers:payment-due' %}">Due</a>
                
               </div>
               
@@ -219,7 +196,7 @@
           <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="/dashboard/accounts/employeelogout">Logout</a>
+            <a class="btn btn-primary" href="/dashboard/accounts/farmerlogout">Logout</a>
           </div>
         </div>
       </div>
@@ -230,31 +207,31 @@
 
 </html>
 
-<script src="/static/employees/js/dashboard.js"></script>
+<script src="/static/farmers/js/dashboard.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"
   integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"
   integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
-<script src="/static/employees/js/dashboard.js"></script>
+<script src="/static/farmers/js/dashboard.js"></script>
 
 
 <!-- Bootstrap core JavaScript-->
-<script src="/static/employees/vendor/jquery/jquery.min.js"></script>
-<script src="/static/employees/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/static/farmers/vendor/jquery/jquery.min.js"></script>
+<script src="/static/farmers/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="/static/employees/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="/static/farmers/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="/static/employees/js/sb-admin-2.min.js"></script>
+<script src="/static/farmers/js/sb-admin-2.min.js"></script>
 
 <!-- Page level plugins -->
-<script src="/static/employees/vendor/datatables/jquery.dataTables.min.js"></script>
-<script src="/static/employees/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+<script src="/static/farmers/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/static/farmers/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
 <!-- Page level custom scripts -->
-<script src="/static/employees/js/demo/datatables-demo.js"></script>
+<script src="/static/farmers/js/demo/datatables-demo.js"></script>
 
 <!-- //delete link script with modal popup -->
 

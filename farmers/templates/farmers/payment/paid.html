@@ -1,8 +1,8 @@
-{% extends 'employees/base.html' %}
+{% extends 'farmers/base.html' %}
 
 {% block main %}
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">Payment Due</h1>
+                <h1 class="h3 mb-2 text-gray-800">Payment Paid</h1>
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
@@ -15,7 +15,8 @@
                                         <th>SN</th>
                                         <th>Amount</th>
                                         <th>Pay Date</th>
-                                        <th>Farmer</th>
+                                        <
+                                        <th>Admin</th>
                                     </tr>
                                 </thead>
                                 
@@ -25,7 +26,8 @@
                                         <td>{{ forloop.counter }}</td>
                                         <td>{{ payment.amt }}</td>
                                         <td>{{ payment.payment_date }}</td>
-                                        <td>{{ payment.farmer_id }}</td>
+                                        
+                                        <td>{{ payment.admin_id }}</td>
                                     </tr>
                                     {% endfor %}
                                     

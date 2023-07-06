@@ -1,15 +1,13 @@
 from datetime import date, timedelta
 import datetime
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse, reverse_lazy
 from dashboard.models import *
 from user.models import *
 from django.contrib.auth.decorators import login_required
 from user.models import *
-from django.db.models.functions import ExtractYear, ExtractMonth
-from utils.charts import months, colorPrimary, get_year_dict
-from django.db.models import F, Sum,Q
+
 
 
 # Create your views here.
@@ -93,8 +91,8 @@ def milkCreateView(request):
                 min_allowed_date = date.today() - timedelta(days=2)
                 if milk_date > date.today():
                     errors["date"] = "Selected date cannot be in future."
-                # elif milk_date < min_allowed_date:
-                #     errors["date"] = "entry date cannot be more than 2 day old."
+                elif milk_date < min_allowed_date:
+                    errors["date"] = "entry date cannot be more than 2 day old."
             except ValueError:
                 errors["date"] = "Invalid date format."
 

@@ -91,7 +91,7 @@ class FarmerLoginViews(FormView):
             login(self.request, form.instance)
             farmer = FarmerProfile.objects.get(user_id=form.instance.id)
             self.request.session["farmer_id"] = farmer.id
-            self.request.session["farmer_name"] = farmer.emp_name
+            self.request.session["farmer_name"] = farmer.farmer_name
             return redirect(reverse_lazy("farmers:home"))
         return render(self.request, self.template_name, {'message': message})
 
