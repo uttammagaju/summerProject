@@ -1,0 +1,55 @@
+{% extends 'farmers/base.html' %}
+{% block main %}
+<div class="card">
+
+
+    <form method="POST" action="{% url 'farmers:milk-report' %}">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-3">
+                <strong>Start Date:</strong> <input type="date" class="form-control" name="start_date" required />
+            </div>
+            <div class="col-md-3">
+                <strong>End Date:</strong> <input type="date" class="form-control" name="end_date" required />
+            </div>
+            <div class="col-md-3 pt-4">
+                <input type="submit" value="Search">
+            </div>
+        </div>
+    </form>
+
+
+    <div class="row ">
+        <div class="table-responsive">
+            <div class="col-md-12 mt-2 ">
+                <table id="dataTable" class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>SN</th>
+                            <th>Fat</th>
+                            <th>Quantity in Ltr</th>
+                            <th>Rate</th>
+                            <th>Date</th>
+                            <th>Fill By</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for milk in datas %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ milk.fat }}</td>
+                            <td>{{ milk.qty }}</td>
+                            <td>{{ milk.rate }}</td>
+                            <td>{{ milk.date }}</td>
+                            <td>{{ milk.emp_id }}</td>
+
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock main %}

@@ -10,7 +10,7 @@ urlpatterns = [
     # # payment
     path("payment/due", views.paymentDue, name = "payment-due"),
     path("payment/paid", views.paymentPaid, name = "payment-paid"),
-
+    path("milk/report",views.milkReport, name= "milk-report"),
 
 ]
 

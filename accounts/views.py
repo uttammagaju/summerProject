@@ -43,7 +43,7 @@ class LoginViews(FormView):
                 employee.save()
 
             return redirect(reverse_lazy("dashboard:home"))
-
+        return render(self.request, self.template_name, {'message': message})
 
 class LogoutViews(FormView):
     def get(self, request, *args, **kwargs):
