@@ -32,21 +32,11 @@ urlpatterns = [
     path("milk/<int:pk>/delete", views.milkDeleteView, name="milk-delete"),
     # Commission
     path("commissions/paid", views.commissionPaidListView, name="commissions-paid"),
-    path(
-        "commissions/unpaid", views.commissionUnpaidListView, name="commissions-unpaid"
-    ),
+    path("commissions/unpaid", views.commissionUnpaidListView, name="commissions-unpaid"),
     path("commissions/<int:pk>/paid", views.commissionPaid, name="commissions-paid"),
     # path('commissions/create',views.commissionCreateView, name = 'commissions-create'),
-    path(
-        "commissions/<int:pk>/update",
-        views.commissionUpdateView,
-        name="commissions-update",
-    ),
-    path(
-        "commissions/<int:pk>/delete",
-        views.commissionDeleteView,
-        name="commissions-delete",
-    ),
+    path("commissions/<int:pk>/update",views.commissionUpdateView,name="commissions-update"),
+    path("commissions/<int:pk>/delete",views.commissionDeleteView,name="commissions-delete"),
     # Payments
     path("payments/paid", views.paidListView, name="payments-paid"),
     path("payments/unpaid", views.unpaidListView, name="payments-unpaid"),
@@ -54,8 +44,13 @@ urlpatterns = [
     path("payments/<int:pk>/update", views.paymentUpdateView, name="payments-update"),
     path("payments/<int:pk>/delete", views.paymentDeleteView, name="payments-delete"),
     path("payments/<int:pk>/paid", views.paymentPaid, name="payments-paid"),
-    path(
-        "chart/filter-options/", views.get_filter_options, name="chart-filter-options"
-    ),
+
+    # path('payments/esewa-request',views.EsewaRequestView.as_view, name="esewa-request"),
+    # path("payments/paid", views.pay, name="payments-paid"),
+
+    # Chart
+    path("chart/filter-options/", views.get_filter_options, name="chart-filter-options"),
     path("chart/milks/<int:year>/", views.get_milks_chart, name="chart-sales"),
+
+    path('api/verify_payment',views.verify_payment,name='verify_payment')
 ]

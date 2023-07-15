@@ -1,0 +1,81 @@
+{% extends 'dashboard/base.html' %}
+
+{% block main %}
+<hr class="mt-0">
+<div class="card shadow m-5" id="signupform">
+    <div class="card-body">
+        <div class="container-fluid">
+            <h5 class="p-2" style="border-bottom: 2px solid orange;color:green">Confirm Payment Detail</h5>
+            <form method="post" name="booking">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label for="fname">Amount</label>
+                            <input type="text" name="amt"  value="{{payments.amt}}" readonly class="form-control"
+                                   pattern="[A-Za-z]+">
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Farmer Name</label>
+                            <input type="text" name="farmer_name" value="{{ farmer_name }}"  readonly class="form-control"
+                                   pattern="[A-Za-z]+">
+                        </div>
+                    </div>
+                </div>
+            </form>
+              <button id="payment-button" class="m-2 px-3 btn btn-primary">Pay with Khalti</button>
+        </div>
+    </div>
+</div>
+
+    <!-- Place this where you need payment button -->
+    <!-- Paste this code anywhere in you body tag -->
+    <script>
+     function verifyPayment(payload) {
+        $.ajax({
+            url: "{% url 'dashboard:verify_payment' %}",
+            type: "POST",
+            data: payload,
+            dataType: 'json',
+            success: function (response) { alert(response) },
+            error: function (error) { alert(error.responseJSON['message']) }
+        });
+    }
+
+        var config = {
+            // replace the publicKey with yours
+            "publicKey": "test_public_key_dd8a321878ff4fbd8a6015c2b925f25b",
+            "productIdentity": "1234567890",
+            "productName": "Dragon",
+            "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
+            "paymentPreference": [
+                "KHALTI",
+                "EBANKING",
+                "MOBILE_BANKING",
+                "CONNECT_IPS",
+                "SCT",
+                ],
+            "eventHandler": {
+                onSuccess (payload) {
+                    // hit merchant api for initiating verfication
+                    console.log(payload);
+                },
+                onError (error) {
+                    console.log(error);
+                },
+                onClose () {
+                    console.log('widget is closing');
+                }
+            }
+        };
+
+        var checkout = new KhaltiCheckout(config);
+        var btn = document.getElementById("payment-button");
+        btn.onclick = function () {
+            // minimum transaction amount must be 10, i.e 1000 in paisa.
+            checkout.show({amount: 1000});
+        }
+    </script>
+{% endblock main %}

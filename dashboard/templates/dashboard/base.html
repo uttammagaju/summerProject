@@ -15,6 +15,9 @@
 
   <!-- Custom styles for this template -->
   <link href="/static/dashboard/css/dashboard.css" rel="stylesheet">
+  
+  <!-- khalti static files -->
+  <script src="https://khalti.s3.ap-south-1.amazonaws.com/KPG/dist/2020.12.17.0.0.0/khalti-checkout.iffe.js"></script>
   <style>
     .nav-item.dropdown:hover .dropdown-menu {
       display: block;
@@ -72,7 +75,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="{% url 'dashboard:employees-list' %}">
-                <span data-feather="file" class="align-text-bottom"></span>
+                <span data-feather="report" class="align-text-bottom"></span>
                 Employee
               </a>
             </li>

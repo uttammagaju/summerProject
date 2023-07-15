@@ -32,6 +32,7 @@ def paymentPaid(request):
     payments =  Payment.objects.filter(farmer_id=request.session.get("farmer_id"),status='paid').order_by('-payment_date')
     return render( request, "farmers/payment/paid.html",{"payments": payments})
 
+@login_required(login_url="/dashboard/accounts/farmerlogin")
 def milkReport(request):
     if request.method=="POST":
         start_date = request.POST.get('start_date')

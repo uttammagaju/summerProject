@@ -1,4 +1,5 @@
-from django.http import HttpResponseRedirect, JsonResponse
+from urllib import response
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
@@ -7,11 +8,16 @@ from datetime import date, timedelta
 import re, datetime
 from django.contrib.auth.decorators import login_required
 from django.db.models import F, Sum
+from django.views import View
+from dashboard.esewa import initiate_esewa_payment
 from .forms import *
 from .models import *
 from user.models import *
+import requests
 from django.db.models.functions import ExtractYear, ExtractMonth
 from utils.charts import months, colorPrimary, get_year_dict
+from django.views.decorators.csrf import csrf_exempt
+  
 
 User = get_user_model()
 # request.session['admin_id'] = User.id
@@ -39,7 +45,7 @@ def dashboardHomeView(request):
     total_milk_collected = Milk.objects.filter(date=date.today()).aggregate(
         total_qty=models.Sum("qty"))["total_qty"]
     # calculate the total milk collected today
-    total_amount = Payment.objects.filter(payment_date=date.today()).aggregate(
+    total_amount = Payment.objects.filter(payment_date=date.today(),status='unpaid').aggregate(
         total_amt=models.Sum("amt"))["total_amt"]
     
     return render(
@@ -861,17 +867,19 @@ def paymentUpdateView(request, pk):
 @login_required(login_url="/dashboard/accounts/login")
 def paymentDeleteView(request, pk):
     payment = Payment.objects.get(pk=pk)
+    request.session['payment_id'] = pk
     payment.delete()
     return HttpResponseRedirect(reverse("dashboard:payments-list"))
 
 @login_required(login_url="/dashboard/accounts/login")
 def paymentPaid(request, pk):
     payments = Payment.objects.get(pk=pk)
-    payments.status = 'paid'
-    payments.payment_date = date.today()
-    payments.admin_id = User.objects.get(id=request.session.get("admin_id"))
-    payments.save()
-    return redirect(reverse_lazy("dashboard:payments-paid"))
+    request.session['payment_id'] = pk
+    print(request.session.get('payment_id'))
+    farmer_name = payments.farmer_id.farmer_name
+    
+    return render(request, "dashboard/payments/payment.html",{"payments":payments,"farmer_name":farmer_name})
+    
 
 def get_filter_options(request):
     grouped_milk = Milk.objects.annotate(year = ExtractYear("date")).values("year").order_by("-year").distinct()
@@ -901,3 +909,34 @@ def get_milks_chart(request, year):
         },
     })
 
+# Esewa API integrate
+@csrf_exempt
+def verify_payment(request):
+   data = request.POST
+   product_id = data['product_identity']
+   token = data['token']
+   amount = data['amount']
+
+   url = "https://khalti.com/api/v2/payment/verify/"
+   payload = {
+   "token": token,
+   "amount": amount
+   }
+   headers = {
+   "Authorization": "Key test_secret_key_f0fb15ab102b462d8b0fcd07bd221cac3"
+   }
+   
+
+   payment_response = request.POST 
+   print(payment_response)
+   response = requests.post(url, payload, headers = headers)
+   response_data = response.json()
+
+#    if response_data['state']['name'] == 'Completed':
+#         payment = Payment.objects.get(id=request.session.get('payment_id'))
+#         payment.status = 'paid'
+#         payment.payment_date = date.today()
+#         payment.admin_id = User.objects.get(id=request.session.get('admin_id'))
+#         payment.save()
+#    else:
+#        return redirect(reverse_lazy("dashboard:payments-unpaid"))
