@@ -127,9 +127,9 @@
         <a class="dropdown-item nav-link px-3" href="#" data-toggle="modal" data-target="#logoutModal">
           <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-primary"></i>
           Sign out</a>
-        <a class="dropdown-item" href="#">Another action</a>
-        <div class="dropdown-divider"></div>
-        <a class="dropdown-item" href="#">Something else here</a>
+        <a class="dropdown-item" href="{%url 'farmers:change_password'%}">Change Password</a>
+        <!-- <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="#">Something else here</a> -->
       </div>
     </div>
     <!-- <div class="navbar-nav">
@@ -155,8 +155,8 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="{% url 'farmers:milk-report' %}">
-                <span data-feather="home" class="align-text-bottom"></span>
+              <a class="nav-link " aria-current="page" href="{% url 'farmers:milk-report' %}">
+                <span data-feather="book" class="align-text-bottom"></span>
                 Milk Report
               </a>
             </li>

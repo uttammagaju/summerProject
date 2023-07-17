@@ -2,7 +2,10 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 import datetime
+from user.models import *
 from dashboard.models import Payment,Milk
+from django.contrib import messages
+
 
 # Create your views here.
 @login_required(login_url="/dashboard/accounts/farmerlogin")
@@ -45,5 +48,27 @@ def milkReport(request):
         display_datas= Milk.objects.filter(farmer_id=request.session.get("farmer_id")).order_by('-date')
         return render(request, "farmers/milk/report.html",{'datas':display_datas})
 
+@login_required(login_url="/dashboard/accounts/farmerlogin")
+def change_password(request):
+    if request.method == "POST":
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
 
-    
+        try:
+            u = User.objects.get(id=request.session.get("farmer_id")) 
+            if u.check_password(current_password) and confirm_password == new_password:
+                u.set_password(new_password)
+                u.save()
+                messages.success(request, 'Password changed successfully!')
+                return render(request, "farmers/change_password.html")
+            elif confirm_password!= new_password:
+                messages.error(request, 'change password and new password is not same')
+                return render(request, "farmers/change_password.html")
+            else:
+                messages.error(request, 'Incorrect current password!')
+                return render(request, "farmers/change_password.html")
+             
+        except:
+            pass
+    return render(request, "farmers/change_password.html")  

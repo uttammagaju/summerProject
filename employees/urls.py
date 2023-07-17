@@ -15,6 +15,9 @@ urlpatterns = [
     # payment
     path("payment/due", views.paymentDue, name = "payment-due"),
     path("payment/paid", views.paymentPaid, name = "payment-paid"),
+    #change password 
+    path("change_password", views.change_password, name="change_password"),
+
 
 
 ]

@@ -1,4 +1,3 @@
-from urllib import response
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
@@ -9,7 +8,6 @@ import re, datetime
 from django.contrib.auth.decorators import login_required
 from django.db.models import F, Sum
 from django.views import View
-from dashboard.esewa import initiate_esewa_payment
 from .forms import *
 from .models import *
 from user.models import *
@@ -17,7 +15,7 @@ import requests
 from django.db.models.functions import ExtractYear, ExtractMonth
 from utils.charts import months, colorPrimary, get_year_dict
 from django.views.decorators.csrf import csrf_exempt
-  
+from django.contrib import messages
 
 User = get_user_model()
 # request.session['admin_id'] = User.id
@@ -872,7 +870,7 @@ def paymentDeleteView(request, pk):
     return HttpResponseRedirect(reverse("dashboard:payments-list"))
 
 @login_required(login_url="/dashboard/accounts/login")
-def paymentPaid(request, pk):
+def paymentPaidKhalti(request, pk):
     payments = Payment.objects.get(pk=pk)
     request.session['payment_id'] = pk
     print(request.session.get('payment_id'))
@@ -912,31 +910,84 @@ def get_milks_chart(request, year):
 # Esewa API integrate
 @csrf_exempt
 def verify_payment(request):
-   data = request.POST
-   product_id = data['product_identity']
-   token = data['token']
-   amount = data['amount']
+    # data = request.POST
+    # product_id = data['product_identity']
+    # token = data['token']
+    # amount = data['amount']
 
-   url = "https://khalti.com/api/v2/payment/verify/"
-   payload = {
-   "token": token,
-   "amount": amount
-   }
-   headers = {
-   "Authorization": "Key test_secret_key_f0fb15ab102b462d8b0fcd07bd221cac3"
-   }
-   
+    # url = "https://khalti.com/api/v2/payment/verify/"
+    # payload = {
+    # "token": token,
+    # "amount": amount
+    # }
+    # headers = {
+    # "Authorization": "test_secret_key_84070ae476e84785b4a88eb7cc4ffc22"
+    # }
+    if request.method == 'POST':
+        data = request.POST
+        product_id = data.get('product_identity')
+        token = data.get('token')
+        amount = data.get('amount')
 
-   payment_response = request.POST 
-   print(payment_response)
-   response = requests.post(url, payload, headers = headers)
-   response_data = response.json()
+        url = "https://khalti.com/api/v2/payment/verify/"
+        payload = {
+            "token": token,
+            "amount": amount
+        }
+        headers = {
+            "Authorization": "test_secret_key_84070ae476e84785b4a88eb7cc4ffc22"
+        }
+        try:
+            response = requests.post(url, json=payload, headers=headers)
+            response_data = response.json()
+            status_code = str(response.status_code)
+ 
+            print(status_code)
+            if response.status_code == 302:
+                redirect_url = response.headers['Location']
+                return JsonResponse({'redirect_url': redirect_url})
+            
+            return JsonResponse(response_data)
+            # elif status_code == '200':
+            #     payment = Payment.objects.get(id=request.session.get('payment_id'))
+            #     print(request.session.get('admin_id'))
+            #     payment.status = 'paid'
+            #     payment.payment_date = date.today()
+            #     payment.admin_id = User.objects.get(id=request.session.get('admin_id'))
+            #     payment.save()
+            #     return redirect(reverse_lazy("dashboard:payments-paid"))
+            # else:
+            #     return redirect(reverse_lazy("dashboard:payments-unpaid"))
+          
+        except requests.exceptions.RequestException as e:
+            error_message = str(e)
+            return JsonResponse({'error': error_message}, status=500)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-#    if response_data['state']['name'] == 'Completed':
-#         payment = Payment.objects.get(id=request.session.get('payment_id'))
-#         payment.status = 'paid'
-#         payment.payment_date = date.today()
-#         payment.admin_id = User.objects.get(id=request.session.get('admin_id'))
-#         payment.save()
-#    else:
-#        return redirect(reverse_lazy("dashboard:payments-unpaid"))
+
+@login_required(login_url="/dashboard/accounts/login")
+def change_password(request):
+    if request.method == "POST":
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        try:
+            u = User.objects.get(id=request.session.get("admin_id")) 
+            if u.check_password(current_password) and confirm_password == new_password:
+                u.set_password(new_password)
+                u.save()
+                messages.success(request, 'Password changed successfully!')
+                return render(request, "accounts/change_password.html")
+            elif confirm_password!= new_password:
+                messages.error(request, 'change password and new password is not same')
+                return render(request, "accounts/change_password.html")
+            else:
+                messages.error(request, 'Incorrect current password!')
+                return render(request, "accounts/change_password.html")
+             
+        except:
+            pass
+    return render(request, "dashboard/change_password.html")
+ 

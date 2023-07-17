@@ -43,7 +43,7 @@ urlpatterns = [
     path("payments/create", views.paymentCreateView, name="payments-create"),
     path("payments/<int:pk>/update", views.paymentUpdateView, name="payments-update"),
     path("payments/<int:pk>/delete", views.paymentDeleteView, name="payments-delete"),
-    path("payments/<int:pk>/paid", views.paymentPaid, name="payments-paid"),
+    path("payments/<int:pk>/paid", views.paymentPaidKhalti, name="payments-khalti"),
 
     # path('payments/esewa-request',views.EsewaRequestView.as_view, name="esewa-request"),
     # path("payments/paid", views.pay, name="payments-paid"),
@@ -52,5 +52,10 @@ urlpatterns = [
     path("chart/filter-options/", views.get_filter_options, name="chart-filter-options"),
     path("chart/milks/<int:year>/", views.get_milks_chart, name="chart-sales"),
 
-    path('api/verify_payment',views.verify_payment,name='verify_payment')
+    #payment
+    path('api/verify_payment',views.verify_payment,name='verify_payment'),
+
+    #change password
+    path("change_password", views.change_password, name="change_password"),
+
 ]

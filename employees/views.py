@@ -7,6 +7,8 @@ from dashboard.models import *
 from user.models import *
 from django.contrib.auth.decorators import login_required
 from user.models import *
+from django.contrib import messages
+
 
 
 
@@ -219,3 +221,28 @@ def paymentDue(request):
 def paymentPaid(request):
     payments =  Payment.objects.filter(status='paid').order_by('-payment_date')
     return render( request, "employees/payment/paid.html",{"payments": payments})
+
+@login_required(login_url="/dashboard/accounts/employeelogin")
+def change_password(request):
+    if request.method == "POST":
+        current_password = request.POST['current_password']
+        new_password = request.POST['new_password']
+        confirm_password = request.POST['confirm_password']
+
+        try:
+            u = User.objects.get(id=request.session.get("employee_id")) 
+            if u.check_password(current_password) and confirm_password == new_password:
+                u.set_password(new_password)
+                u.save()
+                messages.success(request, 'Password changed successfully!')
+                return render(request, "employees/change_password.html")
+            elif confirm_password!= new_password:
+                messages.error(request, 'change password and new password is not same')
+                return render(request, "employees/change_password.html")
+            else:
+                messages.error(request, 'Incorrect current password!')
+                return render(request, "employees/change_password.html")
+             
+        except:
+            pass
+    return render(request, "employees/change_password.html")

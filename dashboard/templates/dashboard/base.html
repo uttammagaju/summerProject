@@ -85,12 +85,6 @@
                 Farmer
               </a>
             </li>
-            <!-- <li class="nav-item">
-              <a class="nav-link" href="#">
-                <span data-feather="users" class="align-text-bottom"></span>
-                Fat Rate
-              </a>
-            </li> -->
             <li class="nav-item">
               <a class="nav-link" href="{% url 'dashboard:milk-list' %}">
                 <span data-feather="bar-chart-2" class="align-text-bottom"></span>
@@ -117,7 +111,12 @@
                 <li><a class="dropdown-item" href="{% url 'dashboard:payments-unpaid' %}">Unpaid</a></li>
               </ul>
             </li>
-            
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dashboard:change_password' %}">
+                <span data-feather="bar-chart-2" class="align-text-bottom"></span>
+                Change Password
+              </a>
+            </li>          
           </ul>
 
 

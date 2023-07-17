@@ -6,7 +6,8 @@ from django.urls import reverse_lazy
 from user.models import *
 from .forms import LoginForm
 from django.contrib.auth.views import LoginView
-from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
 class LoginViews(FormView):
