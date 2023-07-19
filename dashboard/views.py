@@ -60,10 +60,14 @@ def dashboardHomeView(request):
 
 
 @login_required(login_url="/dashboard/accounts/login")
-def employeeListView(request):
+def employeeActiveView(request):
     employees = EmployeeProfile.objects.filter(is_active=True)
-    return render(request, "dashboard/employees/list.html", {"employees": employees})
+    return render(request, "dashboard/employees/active.html", {"employees": employees})
 
+@login_required(login_url="/dashboard/accounts/login")
+def employeeInactiveView(request):
+    employees = EmployeeProfile.objects.filter(is_active=False)
+    return render(request, "dashboard/employees/inactive.html", {"employees": employees})
 
 @login_required(login_url="/dashboard/accounts/login")
 def employeeCreateView(request):
@@ -297,10 +301,14 @@ def employeeDeleteView(request, pk):
 
 
 @login_required(login_url="/dashboard/accounts/login")
-def farmerListView(request):
+def farmerActiveView(request):
     farmers = FarmerProfile.objects.filter(is_active=True)
-    return render(request, "dashboard/farmers/list.html", {"farmers": farmers})
+    return render(request, "dashboard/farmers/active.html", {"farmers": farmers})
 
+@login_required(login_url="/dashboard/accounts/login")
+def farmerInactiveView(request):
+    farmers = FarmerProfile.objects.filter(is_active=False)
+    return render(request, "dashboard/farmers/inactive.html", {"farmers": farmers})
 
 @login_required(login_url="/dashboard/accounts/login")
 def farmerCreateView(request):

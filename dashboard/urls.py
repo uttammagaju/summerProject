@@ -7,7 +7,8 @@ app_name = "dashboard"
 urlpatterns = [
     path("", views.dashboardHomeView, name="home"),
     # Employee
-    path("employees", views.employeeListView, name="employees-list"),
+    path("employees/active", views.employeeActiveView, name="employees-active"),
+    path("employees/inactive", views.employeeInactiveView, name="employees-inactive"),
     path("employees/create", views.employeeCreateView, name="employees-create"),
     path(
         "employees/<int:pk>/update", views.employeeUpdateView, name="employees-update"
@@ -16,7 +17,9 @@ urlpatterns = [
         "employees/<int:pk>/delete", views.employeeDeleteView, name="employees-delete"
     ),
     # Farmer
-    path("farmers", views.farmerListView, name="farmers-list"),
+    path("farmers/active", views.farmerActiveView, name="farmers-active"),
+    path("farmers/inactive", views.farmerInactiveView, name="farmers-inactive"),
+
     path("farmers/create", views.farmerCreateView, name="farmers-create"),
     path("farmers/<int:pk>/update", views.farmerUpdateView, name="farmers-update"),
     path("farmers/<int:pk>/delete", views.farmerDeleteView, name="farmers-delete"),
