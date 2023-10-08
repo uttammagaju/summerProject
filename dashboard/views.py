@@ -154,10 +154,11 @@ def employeeCreateView(request):
                 emp_contact=emp_contact,
                 reg_date=reg_date,
                 admin_id=User.objects.get(id=request.session.get("admin_id")),
+                salary='15000'
             )
             EmployeeProfile.salary = 15000
             emp_profile.save()
-        return redirect(reverse_lazy("dashboard:employees-list"))
+        return redirect(reverse_lazy("dashboard:employees-active"))
     else:
         return render(
             request,
@@ -181,81 +182,92 @@ def employeeUpdateView(request, pk):
         reg_date = request.POST.get("reg_date")
         # admin_id = User.objects.get(pk=request.POST["admin_id"])
         #validation 
-
-        errors = {}
-        # perform Validation
-        email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-        if not emp_email:
-            errors["emp_email"] = "email field is requied."
-        elif not re.match(email_pattern, emp_email):
-            errors["emp_email"] = "email is not valid."
+        employee.emp_email= emp_email
+        employee.emp_pwd = emp_pwd
+        employee.emp_name = emp_name
+        employee.emp_contact = emp_contact
+        employee.reg_date = reg_date
+        employee.save()
+        # errors = {}
+        # # perform Validation
+        # email_pattern = r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        # if not emp_email:
+        #     errors["emp_email"] = "email field is requied."
+        # elif not re.match(email_pattern, emp_email):
+        #     errors["emp_email"] = "email is not valid."
        
 
-        password_pattern = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$"
-        if not emp_pwd:
-            errors["emp_pwd"] = "password field is required."
-        elif not re.match(password_pattern, emp_pwd):
-            errors[
-                "emp_pwd"
-            ] = "Invalid password format. It must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, and one digit."
+        # password_pattern = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$"
+        # if not emp_pwd:
+        #     errors["emp_pwd"] = "password field is required."
+        # elif not re.match(password_pattern, emp_pwd):
+        #     errors[
+        #         "emp_pwd"
+        #     ] = "Invalid password format. It must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, and one digit."
 
-        name_pattern = r"^[A-Za-z\s]+$"
-        if not emp_name:
-            errors["emp_name"] = "name field is required."
-        elif not re.match(name_pattern, emp_name):
-            errors["emp_name"] = "Invalid name"
+        # name_pattern = r"^[A-Za-z\s]+$"
+        # if not emp_name:
+        #     errors["emp_name"] = "name field is required."
+        # elif not re.match(name_pattern, emp_name):
+        #     errors["emp_name"] = "Invalid name"
 
-        contact_pattern = r"^98\d{8}$"
-        if not emp_contact:
-            errors["emp_contact"] = "contact field is required."
-        elif not re.match(contact_pattern, emp_contact):
-            errors[
-                "emp_contact"
-            ] = 'Invalid contact number format. It must start with "98" and have a length of 10 digits.'
+        # contact_pattern = r"^98\d{8}$"
+        # if not emp_contact:
+        #     errors["emp_contact"] = "contact field is required."
+        # elif not re.match(contact_pattern, emp_contact):
+        #     errors[
+        #         "emp_contact"
+        #     ] = 'Invalid contact number format. It must start with "98" and have a length of 10 digits.'
 
 
-        # reg_date_pattern = r'^\d{4}-\d{2}-\d{2}$'
-        if not reg_date:
-            errors["reg_date"] = "date filed is required."
-        else:
-            try:
-                r_date = date.fromisoformat(reg_date)
-                if r_date > date.today():
-                    errors["reg_date"] = "Selected date cannot be in future."
-            except ValueError:
-                errors["reg_date"] = "Invalid date format."
+        # # reg_date_pattern = r'^\d{4}-\d{2}-\d{2}$'
+        # if not reg_date:
+        #     errors["reg_date"] = "date filed is required."
+        # else:
+        #     try:
+        #         r_date = date.fromisoformat(reg_date)
+        #         if r_date > date.today():
+        #             errors["reg_date"] = "Selected date cannot be in future."
+        #     except ValueError:
+        #         errors["reg_date"] = "Invalid date format."
         
-        if errors:
-            return render(
-                request,
-                "dashboard/employees/update_Form.html",
-                {
-                    "errors": errors,
-                    "emp_email": emp_email,
-                    "emp_name": emp_name,
-                    "emp_pwd": emp_pwd,
-                    "emp_name": emp_name,
-                    "emp_contact": emp_contact,
-                    "reg_date": reg_date,
-                },
-            )
+        # if errors:
+        #     return render(
+        #         request,
+        #         "dashboard/employees/update_Form.html",
+        #         {
+        #             "errors": errors,
+        #             "emp_email": emp_email,
+        #             "emp_name": emp_name,
+        #             "emp_pwd": emp_pwd,
+        #             "emp_name": emp_name,
+        #             "emp_contact": emp_contact,
+        #             "reg_date": reg_date,
+        #         },
+        #     )
         
-        else:
-            # Update the EmployeeProfile
-            employee.emp_email = emp_email
-            employee.emp_pwd = emp_pwd
-            employee.emp_name = emp_name
-            employee.emp_contact = emp_contact
-            # employee.admin_id = admin_id
-            employee.reg_date = reg_date
-            employee.save()
+        # else:
+        #     # Update the EmployeeProfile
+        #     employee.emp_email = emp_email
+        #     employee.emp_pwd = emp_pwd
+        #     employee.emp_name = emp_name
+        #     employee.emp_contact = emp_contact
+        #     # employee.admin_id = admin_id
+        #     employee.reg_date = reg_date
+        #     employee.save()
 
-            if user:
-                user.email = emp_email
-                user.username = emp_name
-                user.save()
+        #     if user:
+        #         user.email = emp_email
+        #         user.username = emp_name
+        #         user.save()
 
-            return redirect(reverse_lazy("dashboard:employees-list"))
+        #     return redirect(reverse_lazy("dashboard:employees-active"))
+        if user:
+            user.email = emp_email
+            user.username = emp_name
+            user.save()
+
+            return redirect(reverse_lazy("dashboard:employees-active"))
     return render(
         request,
         "dashboard/employees/update_Form.html",
@@ -297,7 +309,7 @@ def employeeDeleteView(request, pk):
             user.is_active = False
             user.save()
 
-    return HttpResponseRedirect(reverse("dashboard:employees-list"))
+    return HttpResponseRedirect(reverse("dashboard:employees-inactive"))
 
 
 @login_required(login_url="/dashboard/accounts/login")
@@ -388,7 +400,7 @@ def farmerCreateView(request):
                 admin_id=User.objects.get(id=request.session.get("admin_id")),
             )
             farmer_profile.save()
-        return redirect(reverse_lazy("dashboard:farmers-list"))
+        return redirect(reverse_lazy("dashboard:farmers-active"))
     else:
         return render(
             request,
@@ -424,7 +436,7 @@ def farmerUpdateView(request, pk):
             user.email = request.POST.get("farmer_email")
             user.username = request.POST.get("farmer_name")
             user.save()
-            return redirect(reverse_lazy("dashboard:farmers-list"))
+            return redirect(reverse_lazy("dashboard:farmers-active"))
     return render(
         request,
         "dashboard/farmers/update_Form.html",
@@ -445,7 +457,7 @@ def farmerDeleteView(request, pk):
             user.is_active = False
             user.save()
 
-    return HttpResponseRedirect(reverse("dashboard:farmers-list"))
+    return HttpResponseRedirect(reverse("dashboard:farmers- inactive"))
 
 
 # #Fatrate
@@ -982,19 +994,47 @@ def change_password(request):
         confirm_password = request.POST['confirm_password']
 
         try:
-            u = User.objects.get(id=request.session.get("admin_id")) 
-            if u.check_password(current_password) and confirm_password == new_password:
-                u.set_password(new_password)
-                u.save()
-                messages.success(request, 'Password changed successfully!')
-                return render(request, "accounts/change_password.html")
-            elif confirm_password!= new_password:
-                messages.error(request, 'change password and new password is not same')
-                return render(request, "accounts/change_password.html")
+            errors = {}
+            password_pattern = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$"
+            if not new_password:
+                errors["new_password"] = "password field is required."
+            elif not re.match(password_pattern, new_password):
+                errors[
+                    "new_password"
+                ] = "Invalid password format. It must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, and one digit."
+
+            if not confirm_password:
+                errors["confirm_password"] = "password field is required."
+            elif not re.match(password_pattern, confirm_password):
+                errors[
+                    "confirm_password"
+                ] = "Invalid password format. It must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, and one digit."
+            
+            if errors:
+                return render(
+                    request,"dashboard/change_password.html",
+                    {
+                        "errors": errors,
+                        "current_password":current_password,
+                        "new_password":new_password,
+                        "confirm_password":confirm_password
+                    }
+                )
+
             else:
-                messages.error(request, 'Incorrect current password!')
-                return render(request, "accounts/change_password.html")
-             
+                u = User.objects.get(id=request.session.get("admin_id")) 
+                if u.check_password(current_password) and confirm_password == new_password:
+                    u.set_password(new_password)
+                    u.save()
+                    messages.success(request, 'Password changed successfully!')
+                    return render(request, "dashboard/change_password.html")
+                elif confirm_password!= new_password:
+                    messages.error(request, 'confirm password and new password is not same')
+                    return render(request, "dashboard/change_password.html")
+                else:
+                    messages.error(request, 'Incorrect current password!')
+                    return render(request, "dashboard/change_password.html")
+                
         except:
             pass
     return render(request, "dashboard/change_password.html")

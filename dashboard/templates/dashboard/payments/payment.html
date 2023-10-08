@@ -30,8 +30,7 @@
     </div>
 </div>
 
-    <!-- Place this where you need payment button -->
-    <!-- Paste this code anywhere in you body tag -->
+    <!-- Place this where you need payment button --> 
     <script>
      function verifyPayment(payload) {
         $.ajax({
@@ -46,7 +45,7 @@
 
         var config = {
             // replace the publicKey with yours
-            "publicKey": "test_public_key_78d325e176ab433487aa185bcf3de1a9",
+            "publicKey": "test_public_key_dd8a321878ff4fbd8a6015c2b925f25b",
             "productIdentity": "1234567890",
             "productName": "Dragon",
             "productUrl": "http://gameofthrones.wikia.com/wiki/Dragons",
@@ -75,8 +74,8 @@
         var checkout = new KhaltiCheckout(config);
         var btn = document.getElementById("payment-button");
         btn.onclick = function () {
-            // minimum transaction amount must be 10, i.e 1000 in paisa.
-            checkout.show({amount: 1000});
+            // minimum transaction amount must be 1000, i.e 100000 in paisa.
+            checkout.show({amount: 100000});
         }
     </script>
 {% endblock main %}

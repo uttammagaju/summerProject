@@ -19,7 +19,6 @@
                                         <th>Salary</th>
                                         <th>Register Date</th>
                                         <th>Admin</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 
@@ -34,21 +33,7 @@
                                         <td>{{ employee.salary }}</td>
                                         <td>{{ employee.reg_date }}</td>
                                         <td>{{ employee.admin_id }}</td>
-                                        <td>
-                                            <div class="btn-group" role="group">
-                                                <a href="{% url 'dashboard:employees-update' employee.pk %}" class="btn btn-info btn-sm ">
-                                                    <i class="fas fa-pen"></i>
-                                                </a>
-                                                {% if not employee.non_deletetable %}
-                                                <form action="{% url 'dashboard:employees-delete' employee.pk %}"  method="post">
-                                                {% csrf_token %}
-                                                    <button class="btn btn-danger btn-sm delete-link ml-2" data-tooltip="tooltip" title="Delete">
-                                                        <i class="far fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                                {% endif %}
-                                            </div>
-                                        </td>
+                                        
                                     </tr>
                                     {% endfor %}
                                     

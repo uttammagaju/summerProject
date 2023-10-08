@@ -17,7 +17,7 @@
                                         <th>Address</th>
                                         <th>Contact</th>
                                         <th>Admin</th>
-                                        <th>Action</th>
+                                      
                                     </tr>
                                 </thead>
                                 
@@ -31,21 +31,7 @@
                                         <td>{{ farmer.farmer_address }}</td>
                                         <td>{{ farmer.farmer_contact }}</td>
                                         <td>{{ farmer.admin_id }}</td>
-                                        <td>
-                                            <div class="btn-group" role="group">
-                                                <a href="{% url 'dashboard:farmers-update' farmer.pk %}" class="btn btn-info btn-sm ">
-                                                    <i class="fas fa-pen"></i>
-                                                </a>
-                                                {% if not farmer.non_deletetable %}
-                                                <form action="{% url 'dashboard:farmers-delete' farmer.pk %}"  method="post">
-                                                {% csrf_token %}
-                                                    <button class="btn btn-danger btn-sm delete-link ml-2" data-tooltip="tooltip" title="Delete">
-                                                        <i class="far fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                                {% endif %}
-                                            </div>
-                                        </td>
+                                      
                                     </tr>
                                     {% endfor %}
                                     

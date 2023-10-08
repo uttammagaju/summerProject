@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 import datetime
 from user.models import *
 from dashboard.models import Payment,Milk
@@ -54,21 +55,51 @@ def change_password(request):
         current_password = request.POST['current_password']
         new_password = request.POST['new_password']
         confirm_password = request.POST['confirm_password']
-
+        print(request.session.get("farmer_id"))
         try:
-            u = User.objects.get(id=request.session.get("farmer_id")) 
-            if u.check_password(current_password) and confirm_password == new_password:
-                u.set_password(new_password)
-                u.save()
-                messages.success(request, 'Password changed successfully!')
-                return render(request, "farmers/change_password.html")
-            elif confirm_password!= new_password:
-                messages.error(request, 'change password and new password is not same')
-                return render(request, "farmers/change_password.html")
+            errors = {}
+            password_pattern = r"^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$"
+            if not new_password:
+                errors["new_password"] = "password field is required."
+            elif not re.match(password_pattern, new_password):
+                errors[
+                    "new_password"
+                ] = "Invalid password format. It must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, and one digit."
+
+            if not confirm_password:
+                errors["confirm_password"] = "password field is required."
+            elif not re.match(password_pattern, confirm_password):
+                errors[
+                    "confirm_password"
+                ] = "Invalid password format. It must contain at least 8 characters, including at least one lowercase letter, one uppercase letter, and one digit."
+
+            if errors:
+                return render(
+                    request,"farmers/change_password.html",
+                    {
+                        "errors": errors,
+                        "current_password":current_password,
+                        "new_password":new_password,
+                        "confirm_password":confirm_password
+                    }
+                )
+
             else:
-                messages.error(request, 'Incorrect current password!')
-                return render(request, "farmers/change_password.html")
-             
+                u = User.objects.get(id=request.session.get("farmer_id")) 
+                
+                if u.check_password(current_password) and confirm_password == new_password:
+                    u.set_password(new_password)
+                    u.save()
+                    messages.success(request, 'Password changed successfully!')
+                    return render(request, "farmers/change_password.html")
+                elif confirm_password!= new_password:
+                    messages.error(request, 'confirm password and new password is not same')
+                    return render(request, "farmers/change_password.html")
+                else:
+                    messages.error(request, 'Incorrect current password!')
+                    return render(request, "farmers/change_password.html")
+                
         except:
             pass
-    return render(request, "farmers/change_password.html")  
+    return render(request, "farmers/change_password.html")
+ 
